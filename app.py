@@ -1,9 +1,10 @@
 # ========================
 # Imports
 # ========================
-import os
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from pymongo import MongoClient
+import os
 from dotenv import load_dotenv
 from openai import OpenAI, OpenAIError
 
@@ -26,11 +27,15 @@ OPENAI_KEY = os.getenv("OPENAI_API_KEY")
 # OpenAI client (AI chatbot)
 openai_client = OpenAI(api_key=OPENAI_KEY)
 
+# ========================
 # MongoDB client (database)
-mongo_client = MongoClient("mongodb://localhost:27017/")
+# ========================
+
+MONGO_URI = os.getenv("MONGO_URI")
+
+mongo_client = MongoClient(MONGO_URI)
 db = mongo_client["flask_db"]
 users_collection = db["users"]
-
 
 # ========================
 # Routes
@@ -40,6 +45,11 @@ users_collection = db["users"]
 def home():
     return redirect(url_for("register"))
 
+
+@app.route("/mongo-test")
+def mongo_test():
+    users_collection.insert_one({"status": "connected"})
+    return "MongoDB connected 🎉"
 
 # ---------- AUTH ----------
 @app.route("/login", methods=["GET", "POST"])
