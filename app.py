@@ -31,25 +31,16 @@ openai_client = OpenAI(api_key=OPENAI_KEY)
 # MongoDB client (database)
 # ========================
 
-MONGO_URI = os.getenv("MONGO_URI")
+# Set override=True to ensure the .env file values take precedence
+load_dotenv(override=True)
 
-if not MONGO_URI:
-    raise RuntimeError("MONGO_URI not set in environment variables")
+mongo_uri = os.environ.get("MONGODB_URI")
 
-mongo_client = MongoClient(
-    MONGO_URI,
-    serverSelectionTimeoutMS=5000
-)
 
-# Optional but recommended: test connection once
-try:
-    mongo_client.admin.command("ping")
-except Exception as e:
-    raise RuntimeError(f"MongoDB connection failed: {e}")
 
+mongo_client = MongoClient(mongo_uri)
 db = mongo_client["flask_db"]
 users_collection = db["users"]
-
 
 # ========================
 # Routes
