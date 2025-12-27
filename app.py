@@ -60,13 +60,13 @@ def mongo_test():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form.get("username")
+        email = request.form.get("email")
         password = request.form.get("password")
 
-        user = users_collection.find_one({"username": username})
+        user = users_collection.find_one({"email": email})
 
         if user and user["password"] == password:
-            session["username"] = username
+            session["email"] = email
             return redirect(url_for("dashboard"))
         else:
             flash("Invalid credentials. Please try again.", "danger")
@@ -78,19 +78,23 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        username = request.form.get("username")
+        email = request.form.get("email")
         password = request.form.get("password")
 
-        if not username or not password:
-            flash("Username and password cannot be empty.", "danger")
+        if not email or not password:
+            flash("Email and password cannot be empty.", "danger")
             return redirect(url_for("register"))
 
-        if users_collection.find_one({"username": username}):
-            flash("Username already taken.", "danger")
+        if users_collection.find_one({"email": email}):
+            flash("Email already registered!", "danger")
+            return redirect(url_for("register"))
+
+        if "@gmail.com" not in email:
+            flash("Please enter a valid Gmail address.", "danger")
             return redirect(url_for("register"))
 
         users_collection.insert_one({
-            "username": username,
+            "email": email,
             "password": password
         })
 
@@ -102,16 +106,16 @@ def register():
 
 @app.route("/dashboard")
 def dashboard():
-    if "username" not in session:
+    if "email" not in session:
         flash("Please log in first.", "danger")
         return redirect(url_for("login"))
 
-    return render_template("dashboard.html", username=session["username"])
+    return render_template("dashboard.html", email=session["email"])
 
 
 @app.route("/logout")
 def logout():
-    session.pop("username", None)
+    session.pop("email", None)
     flash("Logged out successfully.", "success")
     return redirect(url_for("login"))
 
@@ -119,7 +123,7 @@ def logout():
 # ---------- CHATBOT ----------
 @app.route("/chat", methods=["POST"])
 def chat():
-    if "username" not in session:
+    if "email" not in session:
         return jsonify({"reply": "Please log in to use the assistant."})
 
     data = request.json
