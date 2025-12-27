@@ -1,117 +1,118 @@
+// =========================
+// Element Checks (Avoid Errors)
+// =========================
+const videoForm = document.getElementById('video-form');
+const stopButton = document.getElementById('stop-session');
+const timerElement = document.getElementById('timer');
+const videoContainer = document.getElementById('video-container');
 
-document.getElementById('video-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const link = document.getElementById('youtube-link').value;
-    const videoId = extractVideoId(link);
+let interval;
 
-    if (videoId) {
-        const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0`;
-        document.getElementById('video-container').innerHTML = `<iframe width="560" height="315" src="${embedUrl}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-        startTimer();
-        document.getElementById('stop-session').style.display = 'block';  // Show the stop button
-        enterFullscreen(); // Enter fullscreen mode when starting the session
-    } else {
-        alert('Invalid YouTube link.');
-    }
-});
+// =========================
+// Start Focus Session
+// =========================
+if (videoForm) {
+    videoForm.addEventListener('submit', function (e) {
+        e.preventDefault();
 
-document.getElementById('stop-session').addEventListener('click', function() {
-    stopSession();
-});
+        const link = document.getElementById('youtube-link').value;
+        const videoId = extractVideoId(link);
+        const studyTimeInput = document.getElementById('study-time').value;
+        const studyTime = parseInt(studyTimeInput);
+
+        if (!studyTime || studyTime <= 0) {
+            alert("Enter a valid study duration.");
+            return;
+        }
+
+        if (videoId) {
+            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0`;
+            videoContainer.innerHTML = `<iframe width="100%" height="315"
+                src="${embedUrl}" allow="autoplay" allowfullscreen></iframe>`;
+
+            startTimer(studyTime * 3600);
+            stopButton.style.display = 'inline-block';
+            enterFullscreen();
+        } else {
+            alert('Invalid YouTube link.');
+        }
+    });
+}
+
+// =========================
+// Stop Session
+// =========================
+if (stopButton) {
+    stopButton.addEventListener('click', stopSession);
+}
 
 function extractVideoId(url) {
-    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const regex = /(?:v=|\/)([a-zA-Z0-9_-]{11})(?:\?|&|$)/;
     const match = url.match(regex);
     return match ? match[1] : null;
 }
 
-let interval;
-function startTimer() {
-    let studyTime = parseInt(document.getElementById('study-time').value) * 3600;
-    const timerElement = document.getElementById('timer');
+function startTimer(seconds) {
+    clearInterval(interval);
+    
     interval = setInterval(() => {
-        const hours = Math.floor(studyTime / 3600);
-        const minutes = Math.floor((studyTime % 3600) / 60);
-        const seconds = studyTime % 60;
-        timerElement.textContent = `${hours}h ${minutes}m ${seconds}s`;
-        if (studyTime > 0) {
-            studyTime--;
-        }
-        else {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = seconds % 60;
+
+        timerElement.textContent = `${h}h ${m}m ${s}s`;
+
+        if (seconds-- <= 0) {
             clearInterval(interval);
-            alert('Study session completed!');
+            alert('Great job! Study session completed 🎉');
+            stopSession();
         }
     }, 1000);
 }
 
 function stopSession() {
     clearInterval(interval);
-    document.getElementById('timer').textContent = 'Session stopped';
-    document.getElementById('video-container').innerHTML = '';
-    document.getElementById('stop-session').style.display = 'none';  // Hide the stop button
+    timerElement.textContent = 'Session stopped';
+    videoContainer.innerHTML = '';
+    stopButton.style.display = 'none';
     exitFullscreen();
 }
 
+// =========================
+// Fullscreen Controls
+// =========================
 function enterFullscreen() {
     const elem = document.documentElement;
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen().catch(err => {
-            console.log(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
-        });
-    } else if (elem.mozRequestFullScreen) { // Firefox
-        elem.mozRequestFullScreen().catch(err => {
-            console.log(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
-        });
-    } else if (elem.webkitRequestFullscreen) { // Chrome, Safari, Opera
-        elem.webkitRequestFullscreen().catch(err => {
-            console.log(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
-        });
-    } else if (elem.msRequestFullscreen) { // IE/Edge
-        elem.msRequestFullscreen().catch(err => {
-            console.log(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
-        });
-    }
+    if (elem.requestFullscreen) elem.requestFullscreen();
 }
 
 function exitFullscreen() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen().catch(err => {
-            console.log(`Error attempting to exit fullscreen mode: ${err.message} (${err.name})`);
-        });
-    } else if (document.mozCancelFullScreen) { // Firefox
-        document.mozCancelFullScreen().catch(err => {
-            console.log(`Error attempting to exit fullscreen mode: ${err.message} (${err.name})`);
-        });
-    } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
-        document.webkitExitFullscreen().catch(err => {
-            console.log(`Error attempting to exit fullscreen mode: ${err.message} (${err.name})`);
-        });
-    } else if (document.msExitFullscreen) { // IE/Edge
-        document.msExitFullscreen().catch(err => {
-            console.log(`Error attempting to exit fullscreen mode: ${err.message} (${err.name})`);
-        });
+    if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen();
     }
 }
+
+// =========================
+// Scroll Function For Landing Page
+// =========================
 function scrollToRegister() {
-    document.getElementById("register-form").scrollIntoView({ behavior: "smooth" });
+    const section = document.getElementById("register-form");
+    if (section) section.scrollIntoView({ behavior: "smooth" });
 }
 
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
-
-document.addEventListener('keydown', function(e) {
-    if (e.key === "F12" || (e.ctrlKey && (e.key === 'N' || e.key === 'T' || e.key === 'W'))) {
+// =========================
+// Disable Right-Click & Developer Keys
+// =========================
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+    if (e.key === "F12" || (e.ctrlKey && ["N", "T", "W"].includes(e.key))) {
         e.preventDefault();
     }
 });
 
+// Warn on Exit During Session
 window.addEventListener('beforeunload', function(e) {
-    const confirmationMessage = "Are you sure you want to leave? Your study session will be stopped.";
-    e.returnValue = confirmationMessage; // Standard way to display the confirmation dialog
+    if (interval) {
+        e.returnValue = "Your study session will be stopped.";
+    }
 });
-
-/*
-function redirectToOnlyPage() {
-    window.location.href = "only.html";
-}*/
