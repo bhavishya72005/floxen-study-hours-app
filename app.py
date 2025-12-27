@@ -206,6 +206,11 @@ def terms():
 def contact():
     return render_template("contact.html")
 
+@app.route('/googlead60dc2cca06b5e4.html')
+def google_verify():
+    return app.send_static_file('googlead60dc2cca06b5e4.html')
+
+
 # ========================
 # Run Server
 # ========================
