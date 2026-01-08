@@ -7,7 +7,7 @@ from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
 from openai import OpenAI, OpenAIError
-
+from flask import send_from_directory
 
 
 # ========================
@@ -50,6 +50,9 @@ users_collection = db["users"]
 def home():
     return redirect(url_for("register"))
 
+@app.route("/robots.txt")
+def robots_txt():
+    return send_from_directory("static", "robots.txt")
 
 @app.route("/mongo-test")
 def mongo_test():
