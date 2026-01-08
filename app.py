@@ -7,7 +7,7 @@ from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
 from openai import OpenAI, OpenAIError
-
+from flask import send_from_directory
 
 
 # ========================
