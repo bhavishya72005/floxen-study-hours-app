@@ -119,6 +119,10 @@ def logout():
     flash("Logged out successfully.", "success")
     return redirect(url_for("login"))
 
+@app.route("/robots.txt")
+def robots_txt():
+    return send_from_directory("static", "robots.txt")
+
 
 # ---------- CHATBOT ----------
 @app.route("/chat", methods=["POST"])
