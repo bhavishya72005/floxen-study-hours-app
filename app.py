@@ -27,8 +27,7 @@ OPENAI_KEY = os.getenv("OPENAI_API_KEY")
 # OpenAI client (AI chatbot)
 openai_client = OpenAI(api_key=OPENAI_KEY)
 
-
-@app.before_request 
+ 
 
 # ========================
 # MongoDB client (database)
