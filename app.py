@@ -27,6 +27,17 @@ OPENAI_KEY = os.getenv("OPENAI_API_KEY")
 # OpenAI client (AI chatbot)
 openai_client = OpenAI(api_key=OPENAI_KEY)
 
+
+@app.before_request
+def force_https_and_www():
+    # Force HTTPS
+    if request.headers.get("X-Forwarded-Proto", "http") != "https":
+        return redirect(request.url.replace("http://", "https://"), code=301)
+
+    # Force www
+    if request.host == "floxenstudyhours.com":
+        return redirect("https://www.floxenstudyhours.com" + request.full_path, code=301)
+
 # ========================
 # MongoDB client (database)
 # ========================
