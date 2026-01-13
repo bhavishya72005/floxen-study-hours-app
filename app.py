@@ -27,6 +27,8 @@ OPENAI_KEY = os.getenv("OPENAI_API_KEY")
 # OpenAI client (AI chatbot)
 openai_client = OpenAI(api_key=OPENAI_KEY)
 
+ 
+
 # ========================
 # MongoDB client (database)
 # ========================
@@ -121,6 +123,10 @@ def logout():
     session.pop("email", None)
     flash("Logged out successfully.", "success")
     return redirect(url_for("login"))
+
+@app.route("/robots.txt")
+def robots_txt():
+    return send_from_directory("static", "robots.txt")
 
 
 # ---------- CHATBOT ----------
