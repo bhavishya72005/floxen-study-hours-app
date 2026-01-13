@@ -4,6 +4,10 @@ body {
     margin: 0;
     padding: 0;
 }
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
 
 .welcome-section {
     display: flex;
@@ -184,9 +188,7 @@ button {
 .p {
     color: #11023b;
 }
-.main-container{
-    background-color: white;
-}
+
 label {
     font-size: 18px;
     color: #fafafa;
@@ -195,40 +197,21 @@ label {
     margin-bottom: 5px;
 }
 
-#register-section, #About {
-  display: inline-block;
-  vertical-align: top;
+
+.about-section{
+   max-width: 900px;
+   margin: 80px auto;
+   padding: 20px;
+   line-height: 1.7;
+   color: #333;
 }
 
-#register-section {
-  width: 40%;
-  margin-top: 50px;
-  padding-top: 50px;
-  padding-bottom: 20px;
+.about-section h2{
+   font-size: 28px;
+   margin-bottom: 15px;
 }
 
-#About {
-  width: 50%;
-  margin-top: 30px;
-  padding-left: 20px;
-}
 
-.About {
-  display: inline-block;
-  max-width: 100%;
-  margin-right: 15px;
-  padding-left: 6%;
-  border-width: 2px;
-}
-
-.About p {
-  font-size: medium;
-  line-height: 1.5;
-}
-
-.About h3 {
-  margin-bottom: 15px;
-}
 
 select {
   width: 100%;
@@ -240,15 +223,6 @@ select {
   color: #604545;
   box-shadow: 0 0 10px rgba(209, 207, 207, 0.1);
   transition: border-color 0.3s ease;
-}
-
-
-.main-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 50px;
-  height: 90vh;
 }
 
 .container p {
@@ -273,6 +247,7 @@ select {
   transition: border-color 1.3s ease;
 }
 
+
 select:focus {
   border-color: #11023b;
   outline: none;
@@ -280,8 +255,128 @@ select:focus {
   transition: border-color 0.3s ease;
 }
 
+/* ============================= */
+/*   MAIN CONTENT LAYOUT        */
+/* ============================= */
+
+.main-container {
+    width: 100%;
+    background: #ffffff;
+    padding: 60px 20px 80px;
+    box-sizing: border-box;
+}
+
+/* ---------- ABOUT SECTION (FULL ROW) ---------- */
+
+.about-section {
+    max-width: 900px;
+    margin: 0 auto 70px;
+    text-align: center;
+}
+
+.about-section h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #11023b;
+}
+
+.about-section p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #333;
+    margin: 12px auto;
+    max-width: 800px;
+}
+
+/* ---------- REGISTER CARD ---------- */
+
+#register-section {
+    max-width: 420px;
+    margin: auto;
+    padding: 35px 30px;
+    background: linear-gradient(135deg, #4f7cff, #7b61ff);
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+#register-section h1 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+#register-section p {
+    color: #f0f0f0;
+    font-size: 14px;
+}
+
+/* ---------- FORM ---------- */
+
 #register-form {
-  margin-left: 10px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#register-form input {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+}
+
+#register-form button {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    background: #11023b;
+    color: white;
+    cursor: pointer;
+}
+
+
+.action-row {
+    max-width: 1400px;
+    margin: 60px auto 100px;
+    padding: 0 20px;
+    display: flex;
+    gap: 35px;
+    align-items: flex-start;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+#register-form button:hover {
+    opacity: 0.9;
+}
+
+#register-section a {
+    color: #ffe6ff;
+    font-weight: 500;
+}
+
+#register-section a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- MOBILE FIX ---------- */
+
+@media (max-width: 768px) {
+
+    .about-section h2 {
+        font-size: 26px;
+    }
+
+    .about-section p {
+        font-size: 14px;
+    }
+
+    #register-section {
+        width: 90%;
+        padding: 25px 20px;
+    }
 }
 
 form select {
@@ -325,9 +420,30 @@ input, button {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.works{
-  /*margin-bottom: 28%;*/
-  margin-left: 2%;
+
+/* Register */
+.action-row {
+    flex: 1;
+    max-width: 360px;
+}
+#register-section {
+  flex: 2;                /* wider */
+}
+
+/* Works text */
+.action-row .works {
+    flex: 1;
+    min-width: 220px;
+    padding-top: 10px;
+}
+
+/* Steps */
+.action-row .con {
+    flex: 2;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 .section {
     background: rgba(255, 255, 255, 0.6);
@@ -378,16 +494,131 @@ input, button {
   border-radius: 10px;
 }
 
+/* ============================= */
+/* GLOBAL SAFETY FIX             */
+/* ============================= */
+
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* ============================= */
+/* MAIN CONTENT WRAPPER          */
+/* ============================= */
+
+.main-container {
+    width: 100%;
+    background: #ffffff;
+    padding: 80px 20px 100px;
+    box-sizing: border-box;
+}
+
+/* ============================= */
+/* ABOUT SECTION (FULL ROW)      */
+/* ============================= */
+
+.about-section {
+    max-width: 900px;
+    margin: 0 auto 90px;
+    text-align: center;
+}
+
+.about-section h2 {
+    font-size: 34px;
+    margin-bottom: 18px;
+    color: #11023b;
+}
+
+.about-section p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #333;
+    margin: 14px auto;
+    max-width: 800px;
+}
+
+/* ============================= */
+/* REGISTER + HOW ROW            */
+/* ============================= */
+
+.action-row {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+/* ---------- REGISTER CARD ---------- */
+
+#register-section {
+    flex: 1;
+    max-width: 420px;
+    padding: 38px 30px;
+    background: linear-gradient(135deg, #4f7cff, #7b61ff);
+    border-radius: 22px;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.18);
+    text-align: center;
+}
+
+#register-section h1 {
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+#register-section p {
+    color: #f0f0f0;
+    font-size: 14px;
+}
+
+/* ---------- HOW IT WORKS SIDE ---------- */
+
+.action-row > .works,
+.action-row > .con {
+    flex: 2;
+}
+
+.works {
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.works h1 {
+    font-size: 32px;
+}
+
+/* ---------- STEPS ---------- */
+
+.con {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+/* ============================= */
+/* FOOTER                        */
+/* ============================= */
+
 .site-footer {
-    margin-top: 60px;
-    padding: 25px 15px;
+    margin-top: 80px;
+    padding: 28px 15px;
     background: rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(6px);
     text-align: center;
     font-size: 14px;
     color: #444;
 }
-
+.action-row {
+    max-width: 1400px;
+    margin: auto;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
 .footer-content {
     max-width: 1000px;
     margin: auto;
@@ -412,7 +643,48 @@ input, button {
     color: #888;
 }
 
-/* 📱 MOBILE RESPONSIVE FIX */
+.action-row #register-section {
+    flex: 2;
+}
+
+/* HOW IT WORKS TEXT (MIDDLE) */
+.action-row .works {
+    flex: 1;
+    margin-top: 10px;   /* aligns with register top */
+}
+
+/* STEPS (RIGHT) */
+.action-row .con {
+    flex: 1;
+    margin-top: 10px;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 900px) {
+    .action-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .action-row #register-section,
+    .action-row .works,
+    .action-row .con {
+        width: 100%;
+    }
+
+    .works {
+        text-align: center;
+    }
+
+    .con {
+        justify-content: center;
+    }
+}
+/* ============================= */
+/* SMALL DEVICES                 */
+/* ============================= */
+
 @media (max-width: 768px) {
 
     .welcome-section {
@@ -437,39 +709,11 @@ input, button {
     }
 
     .main-container {
-        flex-direction: column;
-        height: auto;
-        padding: 20px 10px;
-        gap: 20px;
-    }
-
-    #register-section {
-        width: 90%;
-        padding: 20px;
-        margin: 0;
-    }
-
-    .container {
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-    }
-
-    input, button {
-        width: 100%;
-        font-size: 14px;
-    }
-
-    /* Steps Section */
-    .con {
-        flex-direction: column;
-        width: 100%;
-        gap: 15px;
+        padding: 40px 12px 70px;
     }
 
     .section {
         width: 100%;
-        margin: 0;
         text-align: center;
     }
 
@@ -484,36 +728,22 @@ input, button {
     .pa i {
         font-size: 32px;
     }
-
-    .grasp video,
-    .background-clip {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        position: fixed;
-        top: 0;
-        left: 0;
-    }
 }
 
-/* 📌 Ultra small screens */
-@media (max-width: 450px) {
-    .welcome-section {
-        height: auto;
-        padding-bottom: 80px; /* So button doesn’t overlap */
-    }
+/* ============================= */
+/* EXTRA SMALL                   */
+/* ============================= */
 
-    .background-clip {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-    }
+@media (max-width: 450px) {
+
     .welcome-section h1 {
         font-size: 24px;
     }
+
     .button-f {
         font-size: 14px;
     }
+
     input {
         font-size: 13px;
     }

@@ -3,118 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>floxenstudyhours</title>
+
+    <title>Floxen Study Hours – Distraction-Free YouTube Study Tool for Students</title>
+
+    <meta name="description" content="Floxen Study Hours helps students stay focused on YouTube by removing distractions and turning videos into productive study sessions. Register free and study smarter.">
+
+    <link rel="canonical" href="https://floxenstudyhours.com/">
+
     <link rel="icon" sizes="32x32" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
     <!-- Google AdSense -->
     <script async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2183701268775294"
         crossorigin="anonymous">
     </script>
-    <link rel="canonical" href="https://floxenstudyhours.com/">
-     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
-    <div class="welcome-section">
-        <img src="{{ url_for('static', filename='webdf.jpg') }}" alt="Focara Logo" class="logo">
-        <h1>
-            Welcome to
-            <span class="brand-floxen">floxen</span>
-            <span class="brand-study">studyhours</span>
-        </h1>
 
-        <p>Your ultimate study companion</p>
-        <button class="button-f" onclick="scrollToRegister()">Get Started</button>
+<!-- ========== HERO SECTION ========== -->
+<div class="welcome-section">
+    <img src="{{ url_for('static', filename='webdf.jpg') }}" alt="Floxen Study Hours logo" class="logo">
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            <div class="flash-container">
-              {% for category, message in messages %}
-                <div class="flash flash-{{ category }}">
-                  {{ message }}
-                </div>
-              {% endfor %}
-            </div>
-          {% endif %}
-        {% endwith %}
+    <h1>
+        Welcome to
+        <span class="brand-floxen">floxen</span>
+        <span class="brand-study">studyhours</span>
+    </h1>
 
-    </div>
+    <p>Your ultimate distraction-free study companion</p>
+    <button class="button-f" onclick="scrollToRegister()">Get Started</button>
 
-    <div class="grasp">
-        <video autoplay loop muted playsinline class="background-clip">
-            <source src="{{ url_for('static', filename='Comp 1_1.mp4') }}" type="video/mp4">
-        </video>
-    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+</div>
 
-    <div class="main-container">
+<!-- ========== BACKGROUND VIDEO ========== -->
+<div class="grasp">
+    <video autoplay loop muted playsinline class="background-clip">
+        <source src="{{ url_for('static', filename='Comp 1_1.mp4') }}" type="video/mp4">
+    </video>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="main-container">
+
+    <!-- ========== ABOUT / SEO CONTENT ========== -->
+    <section class="about-section">
+        <h2>What is Floxen Study Hours?</h2>
+        <p>
+            Floxen Study Hours is a free productivity platform designed for students who use YouTube for learning but often get distracted by recommendations, shorts, and entertainment content.
+            Our goal is simple: help you stay focused, manage your study time, and turn YouTube into a powerful learning tool.
+        </p>
+
+        <p>
+            With Floxen Study Hours, you can concentrate only on your study video, set goals, and track your learning sessions without falling into the endless scroll of distractions.
+            Whether you are preparing for exams, learning programming, or following online lectures, Floxen is built to support deep focus and consistent study habits.
+        </p>
+    </section>
+    <div class="action-row">
+        <!-- ========== REGISTER SECTION ========== -->
         <div class="container" id="register-section">
             <h1>Register</h1>
             <form action="{{ url_for('register') }}" method="POST" id="register-form">
-                <!--<input type="text" name="username" placeholder="Name" required> -->
                 <input type="email" name="email" id="email" placeholder="Enter your Gmail" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <button type="submit"><b>Register</b></button>
             </form>
             <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
         </div>
+
+        <!-- ========== HOW IT WORKS ========== -->
         <div class="works">
-            <h1>HOW floxenstudyhours WORKS?>>></h1>
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul>
-                    {% for category, message in messages %}
-                        <li class="{{ category }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
+            <h1>How "floxenstudyhours" Works</h1>
         </div>
 
         <div class="con">
             <div class="section">
-              <div class="content">
-                <h1>Step 1</h1>
-                <p><strong>Sign up</strong> and get your account ready!</p>
-              </div>
-              <p class="pa"><i class="fa-solid fa-circle-user"></i></p>
+                <div class="content">
+                    <h1>Step 1</h1>
+                    <p><strong>Create your free account</strong> and get started in seconds.</p>
+                </div>
+                <p class="pa"><i class="fa-solid fa-circle-user"></i></p>
             </div>
+
             <div class="section">
-              <div class="content">
-                <h1>Step 2</h1>
-                <p><strong>Drop your task link</strong> and get set to go!</p>
-
-              </div>
-              <p class="pa"><i class="fa-solid fa-paste"></i></p>
-
+                <div class="content">
+                    <h1>Step 2</h1>
+                    <p><strong>Paste your study video link from youtube</strong> and prepare your session.</p>
+                </div>
+                <p class="pa"><i class="fa-solid fa-paste"></i></p>
             </div>
-            <div class="section">
-              <div class="content">
-                <h1>Step 3</h1>
-                <p><strong>Set your goal </strong>hit start, and crush it!</p>
 
-              </div>
-              <p class="pa"> <i class="fa-solid fa-stopwatch"></i></p>
+            <div class="section">
+                <div class="content">
+                    <h1>Step 3</h1>
+                    <p><strong>Set your goal, start studying</strong> and stay focused.</p>
+                </div>
+                <p class="pa"><i class="fa-solid fa-stopwatch"></i></p>
             </div>
         </div>
-
-
     </div>
 
+</div>
 
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
-    <footer class="site-footer">
-            <div class="footer-content">
-                <p>© 2025 <b>floxenstudyhours.com</b>. All rights reserved.</p>
+<!-- ========== FOOTER ========== -->
+<footer class="site-footer">
+    <div class="footer-content">
+        <p>© 2025 <b>floxenstudyhours.com</b>. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+            <span>|</span>
+            <a href="{{ url_for('terms') }}">Terms & Conditions</a>
+            <span>|</span>
+            <a href="{{ url_for('contact') }}">Contact</a>
+        </div>
+    </div>
+</footer>
 
-                <div class="footer-links">
-                    <a href="{{ url_for('privacy') }}">Privacy Policy</a>
-                    <span>|</span>
-                    <a href="{{ url_for('terms') }}">Terms & Conditions</a>
-                    <span>|</span>
-                    <a href="{{ url_for('contact') }}">Contact</a>
-                </div>
-            </div>
-        </footer>
+<script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
