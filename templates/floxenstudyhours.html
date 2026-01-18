@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,8 +80,15 @@
             <h1>Register</h1>
             <form action="{{ url_for('register') }}" method="POST" id="register-form">
                 <input type="email" name="email" id="email" placeholder="Enter your Gmail" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit"><b>Register</b></button>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="password" placeholder="Password" required minlength="8">
+                    <i class="fa-solid fa-eye" id="togglePassword"></i>
+                </div>
+
+                <div id="password-hint" style="color: #ff4d4d; font-size: 0.8rem; margin-top: 5px; margin-bottom: 10px; display: none;">
+                    Password must be at least 8 characters.
+                </div>
+                <button type="submit" id="submit-btn"><b>Register</b></button>
             </form>
             <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
         </div>

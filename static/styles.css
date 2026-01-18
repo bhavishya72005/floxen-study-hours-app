@@ -230,8 +230,9 @@ select {
 }
 
 .container {
-  background-color: rgba(237, 235, 235, 0.685);
-  background-image: linear-gradient(to right, blue, rgb(255, 255, 255));
+  background-color: #faffee;
+  background-image: linear-gradient(to right, #2f5bff 0%, #6f7dff 55%, #faffee 100%);
+
   padding: 30px;
   padding-top: 2px;
   padding-bottom: 10px;
@@ -350,6 +351,40 @@ select:focus {
 
 #register-form button:hover {
     opacity: 0.9;
+}
+
+/* Add this at the very top of your CSS or in your form section */
+#register-form input,
+#register-form .password-wrapper,
+#register-form button {
+    box-sizing: border-box; /* Crucial for alignment */
+    width: 100%;
+}
+
+/* Fix the wrapper to be exactly the same width as the email field */
+.password-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 5px 0; /* Match the margin of your other inputs */
+}
+
+/* Ensure the password input itself doesn't have extra margins that break the wrapper */
+#password {
+    margin: 0 !important;
+    width: 100%;
+    padding-right: 35px; /* Space for the eye icon */
+}
+
+/* Perfectly center the eye icon vertically */
+#togglePassword {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #777;
+    z-index: 10;
 }
 
 #register-section a {

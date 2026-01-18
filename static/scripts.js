@@ -52,29 +52,51 @@ function extractVideoId(url) {
     return match ? match[1] : null;
 }
 
-function startTimer(seconds) {
-    clearInterval(interval);
-    
-    interval = setInterval(() => {
-        const h = Math.floor(seconds / 3600);
-        const m = Math.floor((seconds % 3600) / 60);
-        const s = seconds % 60;
+// 1. Declare the variable at the top of your script
+let studyInterval = null;
 
+function startTimer(totalSeconds) {
+    // 2. ALWAYS clear any existing interval before starting a new one
+    if (studyInterval) {
+        clearInterval(studyInterval);
+    }
+
+    // Use a local copy of the seconds to avoid external interference
+    let remainingTime = totalSeconds;
+
+    studyInterval = setInterval(() => {
+        // Calculate hours, minutes, seconds
+        const h = Math.floor(remainingTime / 3600);
+        const m = Math.floor((remainingTime % 3600) / 60);
+        const s = remainingTime % 60;
+
+        // Update the display
         timerElement.textContent = `${h}h ${m}m ${s}s`;
 
-        if (seconds-- <= 0) {
-            clearInterval(interval);
+        // 3. Check for completion
+        if (remainingTime <= 0) {
+            clearInterval(studyInterval);
+            studyInterval = null; // Clean up memory
             alert('Great job! Study session completed 🎉');
             stopSession();
+            return;
         }
+
+        remainingTime--; // Decrement at the end
     }, 1000);
 }
 
 function stopSession() {
-    clearInterval(interval);
+    if (studyInterval) {
+        clearInterval(studyInterval);
+        studyInterval = null;
+    }
     timerElement.textContent = 'Session stopped';
     videoContainer.innerHTML = '';
-    stopButton.style.display = 'none';
+
+    // Safety check for stopButton
+    if (stopButton) stopButton.style.display = 'none';
+
     exitFullscreen();
 }
 
@@ -115,4 +137,14 @@ window.addEventListener('beforeunload', function(e) {
     if (interval) {
         e.returnValue = "Your study session will be stopped.";
     }
+});
+
+const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#password');
+
+togglePassword.addEventListener('click', function () {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    this.classList.toggle('fa-eye');
+    this.classList.toggle('fa-eye-slash');
 });

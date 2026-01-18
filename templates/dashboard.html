@@ -1,293 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Floxen – Focus Better</title>
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Google AdSense -->
-    <script async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2183701268775294"
-        crossorigin="anonymous">
-    </script>
-    <link rel="canonical" href="https://floxenstudyhours.com/">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Floxen – Focus Better</title>
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        <!-- Google AdSense -->
+        <script async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2183701268775294"
+            crossorigin="anonymous">
+        </script>
+        <link rel="canonical" href="https://floxenstudyhours.com/">
+        <style>
+            * {
+                box-sizing: border-box;
+            }
 
-        body {
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #c3ecf7, #f6d5f7);
-        }
+            body {
+                min-height: 100vh;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-family: 'Poppins', sans-serif;
+                background: linear-gradient(135deg, #c3ecf7, #f6d5f7);
+            }
 
-        .container {
-            width: 85%;
-            max-width: 950px;
-            padding: 30px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.25);
-            backdrop-filter: blur(14px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            text-align: center;
-        }
+            .container {
+                width: 85%;
+                max-width: 950px;
+                padding: 30px;
+                border-radius: 20px;
+                background: rgba(255,255,255,0.25);
+                backdrop-filter: blur(14px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+                text-align: center;
+            }
 
-        h1 { color: #2b2e4a; }
-        h2 { color: #ff5c58; }
-        p  { color: #5f5f7a; }
+            h1 { color: #2b2e4a; }
+            h2 { color: #ff5c58; }
+            p  { color: #5f5f7a; }
 
-        input, textarea {
-            width: 70%;
-            padding: 12px;
-            border-radius: 30px;
-            border: none;
-            outline: none;
-            margin-bottom: 15px;
-            font-size: 15px;
-        }
+            input, textarea {
+                width: 70%;
+                padding: 12px;
+                border-radius: 30px;
+                border: none;
+                outline: none;
+                margin-bottom: 15px;
+                font-size: 15px;
+            }
 
-        button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 26px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.3s;
-        }
+            button {
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                border: none;
+                padding: 12px 26px;
+                border-radius: 30px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: 0.3s;
+            }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
 
-        #stop-session {
-            display: none;
-            background: linear-gradient(135deg, #ff4b2b, #ff416c);
-            margin-top: 15px;
-        }
+            #stop-session {
+                display: none;
+                background: linear-gradient(135deg, #ff4b2b, #ff416c);
+                margin-top: 15px;
+            }
 
-        .banner {
-            position: relative;
-            margin: 25px auto;
-            width: 100%;
-            border-radius: 15px;
-            overflow: hidden;
-        }
+            .banner {
+                position: relative;
+                margin: 25px auto;
+                width: 100%;
+                border-radius: 15px;
+                overflow: hidden;
+            }
 
-        .banner img {
-            width: 100%;
-        }
+            .banner img {
+                width: 100%;
+            }
 
-        .overlay-text {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: white;
-            background: rgba(0,0,0,0.4);
-        }
+            .overlay-text {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.4rem;
+                font-weight: 600;
+                color: white;
+                background: rgba(0,0,0,0.4);
+            }
 
-        #timer {
-            margin-top: 20px;
-            padding: 10px 20px;
-            display: inline-block;
-            background: rgba(0,0,0,0.15);
-            border-radius: 20px;
-            font-weight: 600;
-        }
+            #timer {
+                margin-top: 20px;
+                padding: 10px 20px;
+                display: inline-block;
+                background: rgba(0,0,0,0.15);
+                border-radius: 20px;
+                font-weight: 600;
+            }
 
-        #video-container iframe {
-            width: 100%;
-            height: 380px;
-            margin-top: 25px;
-            border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-        }
+            #video-container iframe {
+                width: 100%;
+                height: 380px;
+                margin-top: 25px;
+                border-radius: 15px;
+                box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+            }
 
-        .notepad-container {
-            margin-top: 30px;
-            text-align: left;
-        }
+            .notepad-container {
+                margin-top: 30px;
+                text-align: left;
+            }
 
-        textarea {
-            width: 100%;
-            height: 180px;
-            resize: none;
-        }
+            textarea {
+                width: 100%;
+                height: 180px;
+                resize: none;
+            }
 
-        /* CHATBOT */
-        .chatbot-container {
-            margin-top: 35px;
-            text-align: left;
-        }
+            /* CHATBOT */
+            .chatbot-container {
+                margin-top: 35px;
+                text-align: left;
+            }
 
-        #chat-box {
-            height: 220px;
-            overflow-y: auto;
-            padding: 15px;
-            border-radius: 15px;
-            background: rgba(255,255,255,0.35);
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.15);
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
+            #chat-box {
+                height: 220px;
+                overflow-y: auto;
+                padding: 15px;
+                border-radius: 15px;
+                background: rgba(255,255,255,0.35);
+                box-shadow: inset 0 0 8px rgba(0,0,0,0.15);
+                margin-bottom: 10px;
+                font-size: 14px;
+            }
 
-        .message { margin-bottom: 10px; }
-        .user { font-weight: 600; color: #333; }
-        .bot  { color: #5a4fcf; }
+            .message { margin-bottom: 10px; }
+            .user { font-weight: 600; color: #333; }
+            .bot  { color: #5a4fcf; }
 
-        .chat-input {
-            display: flex;
-            gap: 10px;
-        }
+            .chat-input {
+                display: flex;
+                gap: 10px;
+            }
 
-        .chat-input input {
-            flex: 1;
-        }
-    </style>
-</head>
+            .chat-input input {
+                flex: 1;
+            }
+        </style>
+    </head>
 
-<body>
+    <body>
 
-<div class="container">
+        <div class="container">
 
-    <p>Logged in with <b>{{ session['email'] }}</b></p>
+            <p>Logged in with <b>{{ session['email'] }}</b></p>
 
-    <h1>Focus Session</h1>
-    <p>Enter your study duration & a YouTube focus video</p>
+            <h1>Focus Session</h1>
+            <p>Enter your study duration & a YouTube focus video</p>
 
-    <input type="number" id="study-time" min="1" placeholder="Study Time (hours)" required>
+            <input type="number" id="study-time" min="1" placeholder="Study Time (hours)" required>
 
-    <form id="video-form">
-        <input type="url" id="youtube-link" placeholder="Paste YouTube link here" required>
-        <br><br>
-        <button type="submit">Start Focus</button>
-    </form>
+            <form id="video-form">
+                <input type="url" id="youtube-link" placeholder="Paste YouTube link here" required>
+                <br><br>
+                <button type="submit">Start Focus</button>
+            </form>
 
-    <div class="banner">
-        <img src="{{ url_for('static', filename='delivery-banner-bg.png') }}" alt="focus">
-        <div class="overlay-text">Rise above distractions 🚀</div>
-    </div>
+            <div class="banner">
+                <img src="{{ url_for('static', filename='delivery-banner-bg.png') }}" alt="focus">
+                <div class="overlay-text">Rise above distractions 🚀</div>
+            </div>
 
-    <div id="timer"></div>
-    <div id="video-container"></div>
+            <div id="timer"></div>
+            <div id="video-container"></div>
 
-    <button id="stop-session">Stop Session</button>
+            <button id="stop-session">Stop Session</button>
 
-    <div class="notepad-container">
-        <h2>Notes</h2>
-        <textarea placeholder="Write your thoughts here..."></textarea>
-    </div>
+            <div class="notepad-container">
+                <h2>Notes</h2>
+                <textarea placeholder="Write your thoughts here..."></textarea>
+            </div>
 
-    <!-- CHATBOT -->
-    <div class="chatbot-container">
-        <h2>Study Assistant 🤖</h2>
+            <!-- CHATBOT -->
+            <div class="chatbot-container">
+                <h2>Study Assistant 🤖</h2>
 
-        <div id="chat-box"></div>
+                <div id="chat-box"></div>
 
-        <div class="chat-input">
-            <input type="text" id="chat-input" placeholder="Ask a study doubt..." />
-            <button type="button" onclick="sendMessage()">Send</button>
+                <div class="chat-input">
+                    <input type="text" id="chat-input" placeholder="Ask a study doubt..." />
+                    <button type="button" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+
         </div>
-    </div>
 
-</div>
+        <script>
+            let interval;
 
-<script>
-let interval;
+            /* FOCUS SESSION */
+            document.getElementById('video-form').addEventListener('submit', e => {
+                e.preventDefault();
 
-/* FOCUS SESSION */
-document.getElementById('video-form').addEventListener('submit', e => {
-    e.preventDefault();
+                const hours = parseInt(document.getElementById('study-time').value);
+                if (!hours || hours <= 0) {
+                    alert("Enter valid study time");
+                    return;
+                }
 
-    const hours = parseInt(document.getElementById('study-time').value);
-    if (!hours || hours <= 0) {
-        alert("Enter valid study time");
-        return;
-    }
+                const link = document.getElementById('youtube-link').value;
+                const id = link.match(/(?:v=|be\/)([a-zA-Z0-9_-]{11})/)?.[1];
+                if (!id) {
+                    alert("Invalid YouTube link");
+                    return;
+                }
 
-    const link = document.getElementById('youtube-link').value;
-    const id = link.match(/(?:v=|be\/)([a-zA-Z0-9_-]{11})/)?.[1];
-    if (!id) {
-        alert("Invalid YouTube link");
-        return;
-    }
+                document.getElementById('video-container').innerHTML =
+                    `<iframe width="560" height="315"
+                    src="https://www.youtube.com/embed/${id}?autoplay=1"
+                    allow="autoplay" allowfullscreen></iframe>`;
 
-    document.getElementById('video-container').innerHTML =
-        `<iframe width="560" height="315"
-        src="https://www.youtube.com/embed/${id}?autoplay=1"
-        allow="autoplay" allowfullscreen></iframe>`;
+                startTimer(hours * 3600);
+                document.getElementById('stop-session').style.display = 'inline-block';
+                document.documentElement.requestFullscreen?.();
+            });
 
-    startTimer(hours * 3600);
-    document.getElementById('stop-session').style.display = 'inline-block';
-    document.documentElement.requestFullscreen?.();
-});
+            document.getElementById('stop-session').onclick = stopSession;
 
-document.getElementById('stop-session').onclick = stopSession;
+            function startTimer(sec) {
+                const t = document.getElementById('timer');
+                interval = setInterval(() => {
+                    const h = Math.floor(sec / 3600);
+                    const m = Math.floor((sec % 3600) / 60);
+                    const s = sec % 60;
+                    t.textContent = `${h}h ${m}m ${s}s`;
+                    if (sec-- <= 0) stopSession();
+                }, 1000);
+            }
 
-function startTimer(sec) {
-    const t = document.getElementById('timer');
-    interval = setInterval(() => {
-        const h = Math.floor(sec / 3600);
-        const m = Math.floor((sec % 3600) / 60);
-        const s = sec % 60;
-        t.textContent = `${h}h ${m}m ${s}s`;
-        if (sec-- <= 0) stopSession();
-    }, 1000);
-}
+            function stopSession() {
+                clearInterval(interval);
+                document.getElementById('timer').textContent = "Session Ended";
+                document.getElementById('video-container').innerHTML = "";
+                document.getElementById('stop-session').style.display = 'none';
+                document.exitFullscreen?.();
+            }
 
-function stopSession() {
-    clearInterval(interval);
-    document.getElementById('timer').textContent = "Session Ended";
-    document.getElementById('video-container').innerHTML = "";
-    document.getElementById('stop-session').style.display = 'none';
-    document.exitFullscreen?.();
-}
+            /* CHATBOT */
+            async function sendMessage() {
+                const input = document.getElementById("chat-input");
+                const message = input.value.trim();
+                if (!message) return;
 
-/* CHATBOT */
-async function sendMessage() {
-    const input = document.getElementById("chat-input");
-    const message = input.value.trim();
-    if (!message) return;
+                appendMessage("You", message, "user");
+                input.value = "";
 
-    appendMessage("You", message, "user");
-    input.value = "";
+                try {
+                    const response = await fetch("/chat", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ message })
+                    });
 
-    try {
-        const response = await fetch("/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message })
-        });
+                    const data = await response.json();
+                    appendMessage("Assistant", data.reply, "bot");
 
-        const data = await response.json();
-        appendMessage("Assistant", data.reply, "bot");
+                } catch (err) {
+                    appendMessage("Assistant", "Network error. Try again.", "bot");
+                }
+            }
 
-    } catch (err) {
-        appendMessage("Assistant", "Network error. Try again.", "bot");
-    }
-}
+            function appendMessage(sender, text, cls) {
+                const chatBox = document.getElementById("chat-box");
+                const div = document.createElement("div");
+                div.className = `message ${cls}`;
+                div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+                chatBox.appendChild(div);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        </script>
 
-function appendMessage(sender, text, cls) {
-    const chatBox = document.getElementById("chat-box");
-    const div = document.createElement("div");
-    div.className = `message ${cls}`;
-    div.innerHTML = `<strong>${sender}:</strong> ${text}`;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-</script>
-
-</body>
+    </body>
 </html>
