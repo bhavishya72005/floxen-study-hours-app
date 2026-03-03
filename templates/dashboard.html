@@ -62,7 +62,26 @@
                 font-size: 14px;
                 transition: 0.3s;
             }
+            .duration-input {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
 
+            .duration-input input {
+                width: 80px;
+                text-align: center;
+                font-size: 16px;
+                border-radius: 12px;
+            }
+
+            .duration-input span {
+                font-weight: 600;
+                font-size: 16px;
+                color: #333;
+            }
             button:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 10px 20px rgba(0,0,0,0.2);
@@ -167,7 +186,14 @@
             <h1>Focus Session</h1>
             <p>Enter your study duration & a YouTube focus video</p>
 
-            <input type="time" id="study-time" step="60" value="00:00" required>
+            <div class="duration-input">
+                <input type="number" id="hours" min="0" value="0">
+                <span>h</span>
+
+                <input type="number" id="minutes" min="0" max="59" value="0">
+                <span>m</span>
+            </div>
+
 
             <form id="video-form">
                 <input type="url" id="youtube-link" placeholder="Paste YouTube link here" required>
@@ -206,25 +232,21 @@
             document.getElementById('video-form').addEventListener('submit', e => {
                 e.preventDefault();
 
-                const timeValue = document.getElementById('study-time').value;
+                const hours = parseInt(document.getElementById('hours').value) || 0;
+                const minutes = parseInt(document.getElementById('minutes').value) || 0;
 
-                if (!timeValue) {
-                    alert("Enter valid study duration");
+                if (minutes > 59) {
+                    alert("Minutes must be less than 60");
                     return;
                 }
 
-                const parts = timeValue.split(":").map(Number);
-
-                const hours = parts[0] || 0;
-                const minutes = parts[1] || 0;
-                const seconds = parts[2] || 0;
-
-                const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+                const totalSeconds = (hours * 3600) + (minutes * 60);
 
                 if (totalSeconds <= 0) {
                     alert("Enter valid study duration");
                     return;
                 }
+
 
                 const link = document.getElementById('youtube-link').value;
                 const id = link.match(/(?:v=|be\/)([a-zA-Z0-9_-]{11})/)?.[1];
