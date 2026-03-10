@@ -8,6 +8,8 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI, OpenAIError
 from flask import send_from_directory
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 
 # ========================
@@ -43,6 +45,7 @@ mongo_uri = os.environ.get("MONGODB_URI")
 mongo_client = MongoClient(mongo_uri)
 db = mongo_client["flask_db"]
 users_collection = db["users"]
+activity_collection = db["watch_activity"]
 
 # ========================
 # Routes
@@ -116,6 +119,72 @@ def dashboard():
         return redirect(url_for("login"))
 
     return render_template("dashboard.html", email=session["email"])
+
+@app.route("/timer-theme")
+def timer_theme():
+    if "email" not in session:
+        flash("Please log in first.", "danger")
+        return redirect(url_for("login"))
+
+    return render_template("Timer Theme.html", email=session["email"])
+
+@app.route("/your-activity")
+def your_activity():
+    if "email" not in session:
+        flash("Please log in first.", "danger")
+        return redirect(url_for("login"))
+
+    return render_template("your-activity.html", email=session["email"])
+
+@app.route("/activity/log", methods=["POST"])
+def log_activity():
+    if "email" not in session:
+        return jsonify({"ok": False, "message": "Please log in first."}), 401
+
+    data = request.get_json(silent=True) or {}
+    link = (data.get("link") or "").strip()
+    video_id = (data.get("video_id") or "").strip()
+
+    if not link:
+        return jsonify({"ok": False, "message": "Link is required."}), 400
+
+    now_ist = datetime.now(ZoneInfo("Asia/Kolkata"))
+
+    activity_collection.insert_one({
+        "email": session["email"],
+        "link": link,
+        "video_id": video_id,
+        "watched_at": now_ist,
+        "watched_date": now_ist.strftime("%Y-%m-%d")
+    })
+
+    return jsonify({"ok": True})
+
+@app.route("/activity-data")
+def activity_data():
+    if "email" not in session:
+        return jsonify({"ok": False, "message": "Please log in first."}), 401
+
+    email = session["email"]
+    entries = activity_collection.find(
+        {"email": email},
+        {"_id": 0, "link": 1, "video_id": 1, "watched_at": 1, "watched_date": 1}
+    ).sort("watched_at", -1)
+
+    grouped = {}
+    for item in entries:
+        date_key = item.get("watched_date", "Unknown Date")
+        grouped.setdefault(date_key, [])
+        watched_at = item.get("watched_at")
+        time_str = watched_at.strftime("%I:%M %p") if watched_at else ""
+        grouped[date_key].append({
+            "link": item.get("link", ""),
+            "video_id": item.get("video_id", ""),
+            "time": time_str
+        })
+
+    result = [{"date": date, "items": grouped[date]} for date in sorted(grouped.keys(), reverse=True)]
+    return jsonify({"ok": True, "activity": result})
 
 
 @app.route("/logout")

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Your Activity - Floxen</title>
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                min-height: 100vh;
+                margin: 0;
+                font-family: 'Poppins', sans-serif;
+                background: linear-gradient(135deg, #c3ecf7, #f6d5f7);
+                color: #2b2e4a;
+                padding: 26px 16px;
+            }
+
+            .activity-container {
+                width: 100%;
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 28px;
+                border-radius: 20px;
+                background: rgba(255,255,255,0.28);
+                backdrop-filter: blur(14px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            }
+
+            h1 {
+                margin: 0;
+                text-align: center;
+                color: #2b2e4a;
+            }
+
+            .subtitle {
+                text-align: center;
+                color: #5f5f7a;
+                margin: 8px 0 22px;
+            }
+
+            .date-card {
+                border-radius: 14px;
+                background: rgba(255,255,255,0.90);
+                padding: 14px;
+                margin-bottom: 14px;
+                box-shadow: 0 8px 18px rgba(0,0,0,0.10);
+            }
+
+            .date-title {
+                margin: 0 0 10px;
+                color: #5a4fcf;
+                font-size: 17px;
+            }
+
+            .activity-item {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                flex-wrap: wrap;
+                padding: 10px 0;
+                border-top: 1px solid rgba(0,0,0,0.08);
+            }
+
+            .activity-item:first-of-type {
+                border-top: none;
+            }
+
+            .time-pill {
+                padding: 4px 10px;
+                border-radius: 999px;
+                background: rgba(102,126,234,0.12);
+                color: #2b2e4a;
+                font-size: 12px;
+                font-weight: 600;
+            }
+
+            .video-link {
+                color: #2b2e4a;
+                text-decoration: none;
+                word-break: break-all;
+                flex: 1;
+            }
+
+            .video-link:hover {
+                color: #5a4fcf;
+                text-decoration: underline;
+            }
+
+            .actions {
+                margin-top: 20px;
+                text-align: center;
+            }
+
+            .back-btn {
+                display: inline-block;
+                text-decoration: none;
+                border: none;
+                border-radius: 12px;
+                padding: 10px 16px;
+                color: #fff;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                font-weight: 600;
+            }
+
+            .status {
+                text-align: center;
+                color: #5f5f7a;
+                font-weight: 600;
+                padding: 20px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="activity-container">
+            <h1>Your Activity</h1>
+            <p class="subtitle">All watched links grouped by date for <b>{{ email }}</b></p>
+
+            <div id="activity-root">
+                <div class="status">Loading your watched links...</div>
+            </div>
+
+            <div class="actions">
+                <a class="back-btn" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+            </div>
+        </div>
+
+        <script>
+            const root = document.getElementById("activity-root");
+
+            function renderActivity(groups) {
+                if (!groups || groups.length === 0) {
+                    root.innerHTML = '<div class="status">No activity found yet. Start a focus session to log watched links.</div>';
+                    return;
+                }
+
+                root.innerHTML = groups.map(group => {
+                    const rows = group.items.map(item => `
+                        <div class="activity-item">
+                            <span class="time-pill">${item.time || ""}</span>
+                            <a class="video-link" href="${item.link}" target="_blank" rel="noopener noreferrer">${item.link}</a>
+                        </div>
+                    `).join("");
+
+                    return `
+                        <div class="date-card">
+                            <h3 class="date-title">${group.date}</h3>
+                            ${rows}
+                        </div>
+                    `;
+                }).join("");
+            }
+
+            async function loadActivity() {
+                try {
+                    const response = await fetch("/activity-data");
+                    const data = await response.json();
+
+                    if (!data.ok) {
+                        root.innerHTML = '<div class="status">Unable to load activity right now.</div>';
+                        return;
+                    }
+
+                    renderActivity(data.activity || []);
+                } catch (err) {
+                    root.innerHTML = '<div class="status">Network error while loading activity.</div>';
+                }
+            }
+
+            loadActivity();
+        </script>
+    </body>
+</html>

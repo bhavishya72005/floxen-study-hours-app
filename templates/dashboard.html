@@ -126,6 +126,25 @@
                 font-weight: 600;
             }
 
+            #timer-progress-wrap {
+                display: none;
+                width: 100%;
+                max-width: 420px;
+                height: 14px;
+                margin: 12px auto 0;
+                border-radius: 999px;
+                background: rgba(255,255,255,0.45);
+                overflow: hidden;
+                box-shadow: inset 0 0 6px rgba(0,0,0,0.12);
+            }
+
+            #timer-progress-bar {
+                width: 0%;
+                height: 100%;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                transition: width 1s linear;
+            }
+
             #video-container iframe {
                 width: 100%;
                 height: 380px;
@@ -176,6 +195,64 @@
             .chat-input input {
                 flex: 1;
             }
+
+            /* Floating menu */
+            .fab-wrapper {
+                position: fixed;
+                right: 24px;
+                bottom: 24px;
+                z-index: 999;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 10px;
+            }
+
+            .fab-menu {
+                display: none;
+                min-width: 190px;
+                padding: 8px;
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+                border: 1px solid rgba(0,0,0,0.08);
+            }
+
+            .fab-menu.open {
+                display: block;
+            }
+
+            .fab-menu button {
+                width: 100%;
+                text-align: left;
+                border: none;
+                border-radius: 10px;
+                padding: 10px 12px;
+                margin: 2px 0;
+                background: transparent;
+                color: #2b2e4a;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
+            .fab-menu button:hover {
+                background: rgba(118, 75, 162, 0.10);
+                transform: none;
+                box-shadow: none;
+            }
+
+            .fab-button {
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                border: none;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: #fff;
+                font-size: 28px;
+                line-height: 1;
+                cursor: pointer;
+                box-shadow: 0 10px 22px rgba(0,0,0,0.24);
+            }
         </style>
     </head>
 
@@ -204,6 +281,9 @@
             </form>
 
             <div id="timer"></div>
+            <div id="timer-progress-wrap">
+                <div id="timer-progress-bar"></div>
+            </div>
             <div id="video-container"></div>
 
             <button id="stop-session">Stop Session</button>
@@ -227,8 +307,33 @@
 
         </div>
 
+        <div class="fab-wrapper">
+            <div class="fab-menu" id="fab-menu">
+                <button type="button" onclick="window.location.href='/timer-theme'">Timer Theme</button>
+                <button type="button" onclick="window.location.href='/your-activity'">Your Activity</button>
+                <button type="button">Notifications</button>
+            </div>
+            <button type="button" class="fab-button" id="fab-toggle" aria-label="Open quick menu">+</button>
+        </div>
+
         <script>
             let interval;
+            let totalSessionSeconds = 0;
+            const timerTheme = localStorage.getItem("timerTheme") || "standard";
+
+            applyTimerTheme();
+
+            function applyTimerTheme() {
+                const timerBox = document.getElementById("timer");
+                const progressWrap = document.getElementById("timer-progress-wrap");
+                if (timerTheme === "bar") {
+                    progressWrap.style.display = "block";
+                    timerBox.textContent = "Ready to start";
+                } else {
+                    progressWrap.style.display = "none";
+                    timerBox.textContent = "";
+                }
+            }
 
             /* FOCUS SESSION */
             document.getElementById('video-form').addEventListener('submit', e => {
@@ -262,6 +367,7 @@
                     src="https://www.youtube.com/embed/${id}?autoplay=1"
                     allow="autoplay" allowfullscreen></iframe>`;
 
+                logActivity(link, id);
                 startTimer(totalSeconds);
                 document.getElementById('stop-session').style.display = 'inline-block';
                 document.documentElement.requestFullscreen?.();
@@ -271,11 +377,22 @@
 
             function startTimer(sec) {
                 const t = document.getElementById('timer');
+                const bar = document.getElementById('timer-progress-bar');
+                clearInterval(interval);
+                totalSessionSeconds = sec;
+                bar.style.width = "0%";
                 interval = setInterval(() => {
                     const h = Math.floor(sec / 3600);
                     const m = Math.floor((sec % 3600) / 60);
                     const s = sec % 60;
                     t.textContent = `${h}h ${m}m ${s}s`;
+
+                    if (timerTheme === "bar" && totalSessionSeconds > 0) {
+                        const elapsed = totalSessionSeconds - sec;
+                        const percent = Math.min(100, Math.max(0, (elapsed / totalSessionSeconds) * 100));
+                        bar.style.width = `${percent}%`;
+                    }
+
                     if (sec-- <= 0) stopSession();
                 }, 1000);
             }
@@ -283,9 +400,22 @@
             function stopSession() {
                 clearInterval(interval);
                 document.getElementById('timer').textContent = "Session Ended";
+                document.getElementById('timer-progress-bar').style.width = "100%";
                 document.getElementById('video-container').innerHTML = "";
                 document.getElementById('stop-session').style.display = 'none';
                 document.exitFullscreen?.();
+            }
+
+            async function logActivity(link, videoId) {
+                try {
+                    await fetch("/activity/log", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ link: link, video_id: videoId })
+                    });
+                } catch (err) {
+                    // Silent fail: activity logging should not block study flow.
+                }
             }
 
             /* CHATBOT */
@@ -316,6 +446,20 @@
                 if (event.key === "Enter") {
                     event.preventDefault();
                     sendMessage();
+                }
+            });
+
+            const fabToggle = document.getElementById("fab-toggle");
+            const fabMenu = document.getElementById("fab-menu");
+
+            fabToggle.addEventListener("click", function () {
+                fabMenu.classList.toggle("open");
+            });
+
+            document.addEventListener("click", function (event) {
+                const clickedInsideFab = fabToggle.contains(event.target) || fabMenu.contains(event.target);
+                if (!clickedInsideFab) {
+                    fabMenu.classList.remove("open");
                 }
             });
 
