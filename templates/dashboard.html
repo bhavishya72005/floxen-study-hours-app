@@ -165,7 +165,9 @@
             .message { margin-bottom: 10px; }
             .user { font-weight: 600; color: #333; }
             .bot  { color: #5a4fcf; }
-
+            .message-text {
+                white-space: pre-wrap;
+            }
             .chat-input {
                 display: flex;
                 gap: 10px;
@@ -314,7 +316,14 @@
                 const chatBox = document.getElementById("chat-box");
                 const div = document.createElement("div");
                 div.className = `message ${cls}`;
-                div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+                const label = document.createElement("strong");
+                label.textContent = `${sender}: `;
+                const messageText = document.createElement("span");
+                messageText.className = "message-text";
+                messageText.textContent = text;
+
+                div.appendChild(label);
+                div.appendChild(messageText);
                 chatBox.appendChild(div);
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
