@@ -39,7 +39,6 @@
             }
 
             h1 { color: #2b2e4a; }
-            h2 { color: #ff5c58; }
             p  { color: #5f5f7a; }
 
             input, textarea {
@@ -154,7 +153,7 @@
             }
 
             .notepad-container {
-                margin-top: 30px;
+                margin-top: 10px;
                 text-align: left;
             }
 
@@ -164,10 +163,16 @@
                 resize: none;
             }
 
+
             /* CHATBOT */
             .chatbot-container {
-                margin-top: 35px;
+                margin-top: 10px;
                 text-align: left;
+            }
+
+            .h2-heading {
+                height: 195px;
+                width: 210px;
             }
 
             #chat-box {
@@ -302,13 +307,13 @@
             <button id="stop-session">Stop Session</button>
 
             <div class="notepad-container">
-                <h2>Notes</h2>
+                <img src="/static/notepad-text.png" alt="Notepad" class="h2-heading">
                 <textarea placeholder="Write your thoughts here..."></textarea>
             </div>
 
             <!-- CHATBOT -->
             <div class="chatbot-container">
-                <h2>Study Assistant 🤖</h2>
+                <img src="/static/assistant-text.png" alt="Notepad" class="h2-heading">
 
                 <div id="chat-box"></div>
 
