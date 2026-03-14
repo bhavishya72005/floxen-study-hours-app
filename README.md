@@ -6,9 +6,10 @@ Floxen Study Hours is a productivity web app designed to help students
 stay distraction-free while studying. It allows users to:
 
 ✔ Create a study session with a YouTube video's url  
-✔ Track study duration with a countdown timer  
+✔ Track study duration with a countdown timer 
 ✔ Take quick notes while studying  
-✔ Ask a built-in AI chatbot for academic doubts  
+✔ Ask a built-in AI chatbot for academic doubts
+✔ Review your activity history to track study habits
 ✔ Maintain secure login with MongoDB storage  
 
 ---
