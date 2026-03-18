@@ -114,6 +114,14 @@
                 font-weight: 600;
                 padding: 20px 0;
             }
+
+            .thumbnail {
+                width: 120px;
+                height: 70px;
+                border-radius: 8px;
+                object-fit: cover;
+                flex-shrink: 0;
+            }
         </style>
     </head>
     <body>
@@ -133,6 +141,25 @@
         <script>
             const root = document.getElementById("activity-root");
 
+            function getYouTubeThumbnail(url) {
+                try {
+                    let videoId = "";
+
+                    if (url.includes("youtu.be")) {
+                        videoId = url.split("/")[3].split("?")[0];
+                    } else if (url.includes("youtube.com")) {
+                        const params = new URL(url).searchParams;
+                        videoId = params.get("v");
+                    }
+
+                    if (!videoId) return "";
+
+                    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                } catch {
+                    return "";
+                }
+            }
+
             function renderActivity(groups) {
                 if (!groups || groups.length === 0) {
                     root.innerHTML = '<div class="status">No activity found yet. Start a focus session to log watched links.</div>';
@@ -140,12 +167,23 @@
                 }
 
                 root.innerHTML = groups.map(group => {
-                    const rows = group.items.map(item => `
-                        <div class="activity-item">
-                            <span class="time-pill">${item.time || ""}</span>
-                            <a class="video-link" href="${item.link}" target="_blank" rel="noopener noreferrer">${item.link}</a>
-                        </div>
-                    `).join("");
+                    const rows = group.items.map(item => {
+                        const thumb = getYouTubeThumbnail(item.link);
+
+                        return `
+                            <div class="activity-item">
+
+                                ${thumb ? `<img src="${thumb}" class="thumbnail" />` : ""}
+
+                                <span class="time-pill">${item.time || ""}</span>
+
+                                <a class="video-link" href="${item.link}" target="_blank" rel="noopener noreferrer">
+                                    ${item.link}
+                                </a>
+
+                            </div>
+                        `;
+                    }).join("");
 
                     return `
                         <div class="date-card">
