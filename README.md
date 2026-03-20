@@ -65,7 +65,7 @@ Create a `.env` file at project root:
 
 ## 📄 License
 
-MIT License © 2025 Bhavishya
+Apache License 2.0 © 2025 Bhavishya
 
 --- 
 
