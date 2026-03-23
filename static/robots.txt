@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://floxenstudyhours.com/static/sitemap.xml
+Sitemap: https://floxenstudyhours.com/sitemap.xml
