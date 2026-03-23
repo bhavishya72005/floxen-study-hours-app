@@ -4,18 +4,15 @@
     <loc>https://www.floxenstudyhours.com/</loc>
   </url>
   <url>
-    <loc>https://www.floxenstudyhours.com/register</loc>
+    <loc>https://floxenstudyhours.com/login</loc>
   </url>
   <url>
-    <loc>https://www.floxenstudyhours.com/login</loc>
+    <loc>https://floxenstudyhours.com/privacy</loc>
   </url>
   <url>
-    <loc>https://www.floxenstudyhours.com/privacy</loc>
+    <loc>https://floxenstudyhours.com/terms</loc>
   </url>
   <url>
-    <loc>https://www.floxenstudyhours.com/terms</loc>
-  </url>
-  <url>
-    <loc>https://www.floxenstudyhours.com/contact</loc>
+    <loc>https://floxenstudyhours.com/contact</loc>
   </url>
 </urlset>
