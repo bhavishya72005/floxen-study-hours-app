@@ -1,9 +1,10 @@
 # 🌟 Floxen Study Hours – Stay Focused, Stay Sharp!
 
-🔗 Live Website: **https://floxenstudyhours.com**
+🔗 Live Website: **https://www.floxenstudyhours.com**
 
 Floxen Study Hours is a productivity web app designed to help students
-stay distraction-free while studying. It allows users to:
+stay distraction-free while studying. 
+It allows users to:
 
 ✔ Create a study session with a YouTube video's url  
 ✔ Track study duration with a countdown timer 
