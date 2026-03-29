@@ -1,16 +1,20 @@
 # 🌟 Floxen Study Hours – Stay Focused, Stay Sharp!
 
-🔗 Live Website: **https://www.floxenstudyhours.com**
+🔗 Live Website: **https://www.floxenstudyhours.com** 
+
+<p align="center">
+  <img src="static/preview.jpg" alt="Floxen Study Hours Website Preview" width="410" height="390" />
+</p>
 
 Floxen Study Hours is a productivity web app designed to help students
 stay distraction-free while studying. 
 It allows users to:
 
 ✔ Create a study session with a YouTube video's url  
-✔ Track study duration with a countdown timer 
+✔ Track study duration with a countdown timer <br>
 ✔ Take quick notes while studying  
-✔ Ask a built-in AI chatbot for academic doubts
-✔ Review your activity history to track study habits
+✔ Ask a built-in AI chatbot for academic doubts <br>
+✔ Review your activity history to track study habits <br>
 ✔ Maintain secure login with MongoDB storage  
 
 ---
