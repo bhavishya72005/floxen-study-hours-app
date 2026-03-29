@@ -157,10 +157,84 @@
                 text-align: left;
             }
 
-            textarea {
+            .notepad-editor {
                 width: 100%;
-                height: 180px;
-                resize: none;
+                min-height: 180px;
+                padding: 16px 18px;
+                border-radius: 16px;
+                border: 1px solid rgba(43, 46, 74, 0.25);
+                background: rgba(255, 255, 255, 0.92);
+                font-family: 'Poppins', sans-serif;
+                font-size: 0.95rem;
+                line-height: 1.6;
+                color: #2b2e4a;
+                outline: none;
+                box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+                overflow-y: auto;
+            }
+
+            .notepad-editor:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            }
+
+            .notepad-editor:empty::before {
+                content: attr(data-placeholder);
+                color: rgba(43, 46, 74, 0.45);
+                pointer-events: none;
+                display: block;
+                font-weight: 400;
+            }
+
+            .notepad-header {
+                margin-bottom: 10px;
+                padding: 10px 14px;
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.65);
+                backdrop-filter: blur(10px);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: 1px solid rgba(118, 75, 162, 0.2);
+                box-shadow: inset 0 0 6px rgba(118, 75, 162, 0.2);
+            }
+
+            .notepad-header__title {
+                text-align: left;
+                line-height: 1.2;
+            }
+
+            .notepad-header__title span {
+                font-weight: 600;
+                color: #2b2e4a;
+                display: block;
+            }
+
+            .notepad-header__title small {
+                color: #5f5f7a;
+                font-size: 0.75rem;
+            }
+
+            .notepad-controls {
+                display: flex;
+                gap: 6px;
+            }
+
+            .notepad-controls button {
+                border: 1px solid rgba(43, 46, 74, 0.3);
+                background: rgba(255,255,255,0.8);
+                color: #2b2e4a;
+                font-weight: 600;
+                border-radius: 8px;
+                padding: 4px 10px;
+                cursor: pointer;
+                font-size: 0.85rem;
+                transition: transform 0.2s ease, border-color 0.2s ease;
+            }
+
+            .notepad-controls button:hover {
+                border-color: #764ba2;
+                transform: translateY(-1px);
             }
 
 
@@ -308,7 +382,20 @@
 
             <div class="notepad-container">
                 <img src="/static/notepad-text.png" alt="Notepad" class="h2-heading">
-                <textarea placeholder="Write your thoughts here..."></textarea>
+                <div class="notepad-header">
+                    <div class="notepad-header__title">
+                        <span>Formatting</span>
+                        <small>minimal but powerful</small>
+                    </div>
+                    <div class="notepad-controls">
+                        <button type="button" data-format="h1">H1</button>
+                        <button type="button" data-format="h2">H2</button>
+                        <button type="button" data-format="normal">Normal</button>
+                        <button type="button" data-format="bold">B</button>
+                        <button type="button" data-format="bullet">•</button>
+                    </div>
+                </div>
+                <div class="notepad-editor" contenteditable="true" role="textbox" aria-label="Notepad" data-placeholder="Write your thoughts here..."></div>
             </div>
 
             <!-- CHATBOT -->
@@ -498,6 +585,41 @@
                 chatBox.appendChild(div);
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
+
+            const notepadEditor = document.querySelector(".notepad-editor");
+            const notepadButtons = document.querySelectorAll(".notepad-controls button");
+
+            notepadButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    if (!notepadEditor) return;
+                    notepadEditor.focus();
+                    applyNotepadAction(button.dataset.format);
+                });
+            });
+
+            function applyNotepadAction(format) {
+                if (!notepadEditor) return;
+
+                switch (format) {
+                    case "h1":
+                        document.execCommand("formatBlock", false, "h1");
+                        break;
+                    case "h2":
+                        document.execCommand("formatBlock", false, "h2");
+                        break;
+                    case "normal":
+                        document.execCommand("formatBlock", false, "p");
+                        break;
+                    case "bold":
+                        document.execCommand("bold");
+                        break;
+                    case "bullet":
+                        document.execCommand("insertUnorderedList");
+                        break;
+                }
+            }
+
+
         </script>
 
     </body>
