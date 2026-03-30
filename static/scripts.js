@@ -5,9 +5,28 @@ const videoForm = document.getElementById('video-form');
 const stopButton = document.getElementById('stop-session');
 const timerElement = document.getElementById('timer');
 const videoContainer = document.getElementById('video-container');
-
+const logoHoverWrapper = document.querySelector('.logo-hover-wrapper');
+const logoAnimation = logoHoverWrapper?.querySelector('.logo-animation');
 let interval;
 
+const playLogoAnimation = () => {
+    if (!logoAnimation) return;
+    logoAnimation.currentTime = 0;
+    logoAnimation.play().catch(() => {});
+};
+
+const pauseLogoAnimation = () => {
+    if (!logoAnimation) return;
+    logoAnimation.pause();
+    logoAnimation.currentTime = 0;
+};
+
+if (logoHoverWrapper && logoAnimation) {
+    logoHoverWrapper.addEventListener('mouseenter', playLogoAnimation);
+    logoHoverWrapper.addEventListener('mouseleave', pauseLogoAnimation);
+    logoHoverWrapper.addEventListener('focusin', playLogoAnimation);
+    logoHoverWrapper.addEventListener('focusout', pauseLogoAnimation);
+}
 // =========================
 // Start Focus Session
 // =========================

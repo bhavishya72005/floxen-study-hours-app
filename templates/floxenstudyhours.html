@@ -41,16 +41,12 @@
 
 <!-- ========== HERO SECTION ========== -->
 <div class="welcome-section">
-    <video
-        class="logo-animation"
-        muted
-        playsinline
-        preload="metadata"
-        poster="{{ url_for('static', filename='webdf.jpg') }}"
-        aria-label="Floxen Study Hours logo animation"
-    >
-        <source src="{{ url_for('static', filename='logo.mp4') }}" type="video/mp4">
-    </video>
+    <div class="logo-hover-wrapper" tabindex="0" aria-label="Floxen Study Hours logo animation">
+        <img src="{{ url_for('static', filename='webdf.jpg') }}" alt="Floxen Study Hours logo placeholder" class="logo-placeholder">
+        <video class="logo-animation" loop muted playsinline preload="metadata">
+            <source src="{{ url_for('static', filename='logo.mp4') }}" type="video/mp4">
+        </video>
+    </div>
     <h1>
         Welcome to
         <span class="brand-floxen">floxen</span>

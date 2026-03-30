@@ -30,20 +30,55 @@ html, body {
 
 
 
-.logo-animation:hover {
-    outline: 3px solid rgb(255, 255, 255);
-    transition: border-color 0.3s ease;
-    
+.logo-hover-wrapper {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.logo-hover-wrapper:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.9);
+    outline-offset: 6px;
+}
+
+.logo-placeholder,
+.logo-animation {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .logo-animation {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-    transition: box-shadow 0.3s ease;
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.logo-placeholder {
+    position: relative;
+    z-index: 1;
+}
+
+.logo-hover-wrapper:hover .logo-animation,
+.logo-hover-wrapper:focus-within .logo-animation {
+    opacity: 1;
+    visibility: visible;
+}
+
+.logo-hover-wrapper:hover .logo-placeholder,
+.logo-hover-wrapper:focus-within .logo-placeholder {
+    opacity: 0;
 }
 
 
