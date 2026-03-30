@@ -30,18 +30,22 @@ html, body {
 
 
 
-.logo:hover {
+.logo-animation:hover {
     outline: 3px solid rgb(255, 255, 255);
     transition: border-color 0.3s ease;
+    
 }
 
-.logo {
+.logo-animation {
     width: 200px;
-    height: auto;
+    height: 200px;
     border-radius: 50%;
     object-fit: cover;
-    cursor: pointer;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    transition: box-shadow 0.3s ease;
 }
+
 
 .logo-container
 {
