@@ -320,6 +320,73 @@
                 box-shadow: none;
             }
 
+            .notification-toggle {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 6px 10px;
+                border-radius: 12px;
+                background: rgba(118, 75, 162, 0.08);
+                border: 1px solid rgba(118, 75, 162, 0.25);
+                margin-bottom: 6px;
+            }
+
+            .notification-toggle__label {
+                font-size: 13px;
+                font-weight: 600;
+                color: #2b2e4a;
+            }
+
+            .notification-toggle__label span {
+                margin-left: 6px;
+                font-size: 11px;
+                font-weight: 400;
+                color: #5f5f7a;
+            }
+
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 46px;
+                height: 24px;
+            }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                inset: 0;
+                background-color: #d1d1d1;
+                border-radius: 34px;
+                transition: 0.3s ease;
+            }
+
+            .slider::before {
+                position: absolute;
+                content: "";
+                height: 18px;
+                width: 18px;
+                left: 3px;
+                top: 3px;
+                background-color: #fff;
+                border-radius: 50%;
+                transition: 0.3s ease;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            }
+
+            .switch input:checked + .slider {
+                background-color: #667eea;
+            }
+
+            .switch input:checked + .slider::before {
+                transform: translateX(20px);
+            }
+
             .fab-button {
 
                 position: fixed;
@@ -414,9 +481,18 @@
 
         <div class="fab-wrapper">
             <div class="fab-menu" id="fab-menu">
+                <div class="notification-toggle">
+                    <span class="notification-toggle__label">
+                        Email notifications
+                        <span id="notification-status"></span>
+                    </span>
+                    <label class="switch" aria-label="Toggle email notifications">
+                        <input type="checkbox" id="notification-switch">
+                        <span class="slider"></span>
+                    </label>
+                </div>
                 <button type="button" onclick="window.location.href='/timer-theme'">Timer Theme</button>
                 <button type="button" onclick="window.location.href='/your-activity'">Your Activity</button>
-                <button type="button">Notifications</button>
             </div>
             <button type="button" class="fab-button" id="fab-toggle" aria-label="Open quick menu">
                  <img src="/static/menu-icon.png" alt="Menu" class="fab-icon">
@@ -569,6 +645,46 @@
                     fabMenu.classList.remove("open");
                 }
             });
+
+            const notificationSwitch = document.getElementById("notification-switch");
+            const notificationStatus = document.getElementById("notification-status");
+
+            function updateNotificationStatus(enabled) {
+                if (notificationStatus) {
+                    notificationStatus.textContent = enabled ? "On" : "Off";
+                }
+            }
+
+            if (notificationSwitch) {
+                const initialNotificationState = JSON.parse('{{ notifications_enabled | default(false) | tojson | safe }}');
+                notificationSwitch.checked = initialNotificationState;
+                updateNotificationStatus(initialNotificationState);
+
+                notificationSwitch.addEventListener("change", async () => {
+                    const enabled = notificationSwitch.checked;
+                    notificationSwitch.disabled = true;
+
+                    try {
+                        const response = await fetch("/toggle-notifications", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ enabled })
+                        });
+
+                        const payload = await response.json();
+                        if (!payload.ok) throw new Error(payload.message || "Unable to update notifications.");
+                        updateNotificationStatus(payload.enabled);
+                    } catch (err) {
+                        alert("Could not update notification preference.");
+                        notificationSwitch.checked = !enabled;
+                        updateNotificationStatus(!enabled);
+                    } finally {
+                        notificationSwitch.disabled = false;
+                    }
+                });
+            }
 
             function appendMessage(sender, text, cls) {
                 const chatBox = document.getElementById("chat-box");

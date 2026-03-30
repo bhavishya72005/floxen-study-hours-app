@@ -3,6 +3,8 @@
 # ========================
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+from email.message import EmailMessage
+import smtplib
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
@@ -18,9 +20,22 @@ from zoneinfo import ZoneInfo
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "your_secret_key"  # move to .env in future
+app.secret_key = os.getenv("SECRET_KEY", "your_secret_key")
 
 OPENAI_KEY = os.getenv("OPENAI_API_KEY")
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_USERNAME = os.getenv("EMAIL_USERNAME")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+EMAIL_FROM = os.getenv("EMAIL_FROM") or EMAIL_USERNAME
+WELCOME_EMAIL_SUBJECT = "Welcome to Floxen Study Hours"
+WELCOME_EMAIL_BODY = (
+    "Hi there,\n\n"
+    "Welcome to Floxen Study Hours! We are thrilled you signed up and hope this distraction-free study space helps you conquer your goals.\n"
+    "If you ever need a reset, come back, drop in a YouTube link, and let the session begin.\n\n"
+    "Focus on what matters,\n"
+    "Floxen Study Hours Team"
+)
 
 # ========================
 # External Clients
@@ -46,6 +61,28 @@ mongo_client = MongoClient(mongo_uri)
 db = mongo_client["flask_db"]
 users_collection = db["users"]
 activity_collection = db["watch_activity"]
+
+
+def send_notification_email(recipient: str, subject: str, body: str) -> bool:
+    if not all([EMAIL_USERNAME, EMAIL_PASSWORD, EMAIL_HOST, EMAIL_PORT]):
+        app.logger.warning("Email settings incomplete; skipping notification to %s", recipient)
+        return False
+
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = EMAIL_FROM
+    msg["To"] = recipient
+    msg.set_content(body)
+
+    try:
+        with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as smtp:
+            smtp.starttls()
+            smtp.login(EMAIL_USERNAME, EMAIL_PASSWORD)
+            smtp.send_message(msg)
+        return True
+    except Exception as exc:
+        app.logger.error("Failed to send notification to %s: %s", recipient, exc)
+        return False
 
 # ========================
 # Routes
@@ -101,10 +138,21 @@ def register():
             flash("Please enter a valid Gmail address.", "danger")
             return redirect(url_for("register"))
 
-        users_collection.insert_one({
+        new_user = {
             "email": email,
-            "password": password
-        })
+            "password": password,
+            "notifications_enabled": True,
+            "welcome_email_sent": False,
+            "created_at": datetime.now(ZoneInfo("Asia/Kolkata"))
+        }
+
+        users_collection.insert_one(new_user)
+
+        if send_notification_email(email, WELCOME_EMAIL_SUBJECT, WELCOME_EMAIL_BODY):
+            users_collection.update_one(
+                {"email": email},
+                {"$set": {"welcome_email_sent": True}}
+            )
 
         flash("Registration successful! Please log in.", "success")
         return redirect(url_for("login"))
@@ -118,7 +166,43 @@ def dashboard():
         flash("Please log in first.", "danger")
         return redirect(url_for("login"))
 
-    return render_template("dashboard.html", email=session["email"])
+    user = users_collection.find_one({"email": session["email"]}) or {}
+    notifications_enabled = bool(user.get("notifications_enabled", False))
+    return render_template(
+        "dashboard.html",
+        email=session["email"],
+        notifications_enabled=notifications_enabled
+    )
+
+
+@app.route("/toggle-notifications", methods=["POST"])
+def toggle_notifications():
+    if "email" not in session:
+        return jsonify({"ok": False, "message": "Please log in first."}), 401
+
+    data = request.get_json(silent=True) or {}
+    enabled = data.get("enabled")
+
+    if not isinstance(enabled, bool):
+        return jsonify({"ok": False, "message": "Missing or invalid value."}), 400
+
+    email = session["email"]
+    users_collection.update_one(
+        {"email": email},
+        {"$set": {"notifications_enabled": enabled}}
+    )
+
+    user = users_collection.find_one({"email": email}) or {}
+    welcome_sent = user.get("welcome_email_sent", False)
+
+    if enabled and not welcome_sent:
+        if send_notification_email(email, WELCOME_EMAIL_SUBJECT, WELCOME_EMAIL_BODY):
+            users_collection.update_one(
+                {"email": email},
+                {"$set": {"welcome_email_sent": True}}
+            )
+
+    return jsonify({"ok": True, "enabled": enabled})
 
 @app.route("/timer-theme")
 def timer_theme():
