@@ -408,8 +408,8 @@ if __name__ == "__main__":
     scheduler.add_job(
         send_daily_reminders,
         trigger="cron",
-        hour=14,  # 8 PM IST
-        minute=15,
+        hour=15,  # 8 PM IST
+        minute=29,
         id="daily_reminder",
         replace_existing=True
     )
