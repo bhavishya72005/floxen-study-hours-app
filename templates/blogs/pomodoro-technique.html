@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The Pomodoro Technique — does it really work for students? We break down the science behind timed study sessions and what actually matters more than the technique itself." />
+  <meta name="keywords" content="pomodoro technique students, does pomodoro work, study techniques india, focus while studying, JEE NEET study tips, distraction free studying" />
+  <title>The Pomodoro Technique — Does It Really Work for Students? | Floxen Blog</title>
+
+  <!-- Fonts: Cormorant Garamond (editorial) + Plus Jakarta Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       VARIABLES
+    ============================================= */
+    :root {
+      --navy:         #0A2463;
+      --blue:         #1E5FA8;
+      --accent:       #3A86FF;
+      --pale:         #EEF4FF;
+      --border:       #C8D9F5;
+      --white:        #FFFFFF;
+      --ink:          #0D1B2A;
+      --ink-mid:      #3D4F63;
+      --ink-light:    #7A8FA6;
+      --tomato:       #E8472A;  /* pomodoro = tomato in Italian */
+      --tomato-soft:  #FFF3F0;
+      --tomato-border:#FFD0C8;
+      --green-soft:   #F0FFF4;
+      --green-border: #B2DFCC;
+      --green-text:   #1A7A4A;
+      --amber-soft:   #FFFBF0;
+      --amber-border: #FFE8A0;
+      --amber-text:   #7A5C00;
+      --font-head:    'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Plus Jakarta Sans', sans-serif;
+      --max:          740px;
+      --radius:       12px;
+      --transition:   0.25s ease;
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--white);
+      color: var(--ink);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      padding-top: 64px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* =============================================
+       READING PROGRESS BAR
+    ============================================= */
+    .reading-bar {
+      position: fixed;
+      top: 64px; left: 0;
+      height: 3px;
+      background: var(--tomato);
+      width: 0%;
+      z-index: 99;
+      transition: width 0.1s linear;
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* =============================================
+       NAVBAR
+    ============================================= */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(30, 95, 168, 0.25);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(100, 180, 255, 0.3);
+      box-shadow: 0 4px 24px rgba(10,36,99,0.15), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 16px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-head); font-size: 1.15rem;
+      color: white; font-weight: 700; white-space: nowrap;
+      text-decoration: none;
+    }
+    .nav-logo .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--accent); border-radius: 8px;
+      display: flex; align-items: center;
+      justify-content: center; font-size: 1rem;
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.85); transition: color var(--transition); text-decoration: none; }
+    .nav-links a:hover { color: white; text-decoration: none; }
+    .nav-cta {
+      background: var(--accent) !important; color: white !important;
+      padding: 8px 18px !important; border-radius: 50px !important;
+      font-weight: 600 !important; border: none !important;
+      width: auto !important; margin: 0 !important;
+    }
+    .nav-cta:hover { background: var(--navy) !important; }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none !important;
+      border: none !important; width: auto !important;
+      padding: 4px !important; margin: 0 !important;
+    }
+    .hamburger span { display: block; width: 24px; height: 2px; background: white; border-radius: 2px; }
+    .nav-links.open {
+      display: flex; flex-direction: column;
+      position: absolute; top: 64px; left: 0; right: 0;
+      background: rgba(10, 36, 99, 0.95);
+      backdrop-filter: blur(16px);
+      padding: 16px 24px 20px; gap: 14px;
+      border-bottom: 1px solid rgba(100,180,255,0.3);
+    }
+    .nav-links.open a { color: white; font-size: 1rem; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .nav-links.open .nav-cta { border-bottom: none !important; text-align: center; }
+
+    /* =============================================
+       HERO — tomato-accented dark
+    ============================================= */
+    .article-hero {
+      background: linear-gradient(135deg, #0A2463 0%, #12205a 55%, #1a3070 100%);
+      padding: 64px 24px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Tomato circle accent */
+    .article-hero::before {
+      content: '🍅';
+      position: absolute;
+      font-size: 180px;
+      opacity: 0.06;
+      top: -20px; right: 5%;
+      line-height: 1;
+      filter: grayscale(0);
+    }
+    .article-hero::after {
+      content: '';
+      position: absolute;
+      width: 350px; height: 350px;
+      border-radius: 50%;
+      border: 50px solid rgba(232,71,42,0.08);
+      bottom: -120px; left: -60px;
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: var(--max); margin: 0 auto; }
+
+    .breadcrumb {
+      font-size: 0.8rem; color: rgba(255,255,255,0.5);
+      margin-bottom: 18px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .breadcrumb a { color: rgba(255,255,255,0.65); text-decoration: none; }
+    .breadcrumb a:hover { color: white; }
+    .breadcrumb span { color: rgba(255,255,255,0.3); }
+
+    .article-tag {
+      display: inline-block;
+      background: rgba(232,71,42,0.2);
+      color: #ffb3a3;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 50px;
+      border: 1px solid rgba(232,71,42,0.35);
+      margin-bottom: 20px;
+    }
+
+    .article-hero h1 {
+      font-family: var(--font-head);
+      font-size: clamp(1.9rem, 5vw, 3rem);
+      color: white; line-height: 1.2;
+      margin-bottom: 18px; font-weight: 700;
+    }
+
+    .article-hero h1 em {
+      font-style: italic;
+      color: #ffb3a3;
+    }
+
+    .article-hero .subtitle {
+      font-size: 1rem; color: rgba(255,255,255,0.72);
+      max-width: 520px; margin: 0 auto 24px; line-height: 1.7;
+    }
+
+    .article-meta {
+      display: flex; align-items: center; justify-content: center;
+      gap: 20px; flex-wrap: wrap;
+      font-size: 0.82rem; color: rgba(255,255,255,0.5);
+    }
+    .article-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* =============================================
+       ARTICLE BODY
+    ============================================= */
+    .article-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 52px 24px 80px;
+    }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.88rem; color: var(--accent);
+      margin-bottom: 28px; font-weight: 500;
+      transition: gap var(--transition);
+    }
+    .back-link:hover { gap: 10px; text-decoration: none; }
+
+    /* Lead */
+    .lead {
+      font-size: 1.08rem; color: var(--ink-mid);
+      line-height: 1.85; margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Headings */
+    .article-wrap h2 {
+      font-family: var(--font-head);
+      font-size: 1.7rem; color: var(--navy);
+      margin: 2.8rem 0 1rem; line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .article-wrap h3 {
+      font-family: var(--font-head);
+      font-size: 1.2rem; color: var(--blue);
+      margin: 2rem 0 0.7rem;
+      font-style: italic; font-weight: 600;
+    }
+
+    /* Body text */
+    .article-wrap p {
+      font-size: 0.97rem; color: var(--ink-mid);
+      line-height: 1.82; margin-bottom: 1.2rem;
+    }
+
+    .article-wrap strong { color: var(--ink); font-weight: 600; }
+    .article-wrap em { font-style: italic; }
+
+    /* Divider */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+    /* ---- POMODORO VISUAL EXPLAINER ---- */
+    .pomodoro-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .pom-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 20px;
+      border-radius: var(--radius);
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .pom-block.work {
+      background: var(--tomato-soft);
+      border: 1px solid var(--tomato-border);
+    }
+    .pom-block.rest {
+      background: var(--green-soft);
+      border: 1px solid var(--green-border);
+    }
+    .pom-block.long-rest {
+      background: var(--pale);
+      border: 1px solid var(--border);
+    }
+
+    .pom-block .pom-icon { font-size: 1.6rem; }
+    .pom-block .pom-time {
+      font-family: var(--font-head);
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--navy);
+    }
+    .pom-block .pom-label { font-size: 0.75rem; color: var(--ink-light); font-weight: 500; }
+
+    .pom-arrow {
+      font-size: 1.2rem;
+      color: var(--border);
+      padding: 0 6px;
+      align-self: center;
+    }
+
+    .pom-repeat {
+      width: 100%;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--ink-light);
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    /* ---- CALLOUT BOXES ---- */
+    .callout {
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin: 1.8rem 0;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .callout-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .callout-body { flex: 1; }
+    .callout-body strong { display: block; margin-bottom: 5px; font-size: 0.9rem; }
+    .callout-body p { margin: 0; font-size: 0.9rem; line-height: 1.65; }
+
+    .callout.tomato  { background: var(--tomato-soft);  border: 1px solid var(--tomato-border);  color: #8B2500; }
+    .callout.success { background: var(--green-soft);   border: 1px solid var(--green-border);   color: var(--green-text); }
+    .callout.info    { background: var(--pale);          border: 1px solid var(--border);          color: var(--navy); }
+    .callout.amber   { background: var(--amber-soft);   border: 1px solid var(--amber-border);   color: var(--amber-text); }
+
+    /* ---- SCIENCE CARDS ---- */
+    .science-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 1.8rem 0;
+    }
+
+    .science-card {
+      background: var(--pale);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+    }
+
+    .science-card .sc-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .science-card h4 {
+      font-family: var(--font-head);
+      font-size: 1rem; color: var(--navy);
+      margin-bottom: 6px; font-weight: 700;
+    }
+    .science-card p { font-size: 0.85rem; color: var(--ink-mid); margin: 0; line-height: 1.6; }
+
+    /* ---- MYTH vs TRUTH ---- */
+    .myth-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 1.8rem 0;
+    }
+
+    .myth-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .myth-box {
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .myth-box.myth {
+      background: var(--tomato-soft);
+      border: 1px solid var(--tomato-border);
+      color: #8B2500;
+    }
+    .myth-box.truth {
+      background: var(--green-soft);
+      border: 1px solid var(--green-border);
+      color: var(--green-text);
+    }
+    .myth-box strong { display: block; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px; opacity: 0.7; }
+
+    /* ---- PULL QUOTE ---- */
+    .pull-quote {
+      border-left: 4px solid var(--tomato);
+      padding: 16px 20px;
+      margin: 2rem 0;
+      background: var(--tomato-soft);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .pull-quote p {
+      font-family: var(--font-head);
+      font-size: 1.25rem; font-style: italic;
+      color: var(--navy); margin: 0; line-height: 1.45;
+    }
+
+    /* ---- WHAT ACTUALLY MATTERS LIST ---- */
+    .matters-list {
+      list-style: none;
+      margin: 1.5rem 0;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .matters-list li {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 14px 16px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+    .matters-list li:hover {
+      box-shadow: 0 4px 16px rgba(10,36,99,0.09);
+      transform: translateX(4px);
+    }
+    .matters-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+    .matters-text strong { display: block; color: var(--navy); font-size: 0.95rem; margin-bottom: 3px; }
+    .matters-text p { margin: 0; font-size: 0.87rem; color: var(--ink-mid); line-height: 1.6; }
+
+    /* ---- SOFT CTA ---- */
+    .soft-cta {
+      background: var(--pale);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 28px;
+      margin: 3rem 0 0;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .soft-cta-icon { font-size: 2.2rem; flex-shrink: 0; }
+    .soft-cta-text h3 {
+      font-family: var(--font-head);
+      font-size: 1.2rem; color: var(--navy);
+      margin-bottom: 6px; font-weight: 700;
+    }
+    .soft-cta-text p { font-size: 0.9rem; color: var(--ink-mid); margin-bottom: 14px; line-height: 1.6; }
+    .soft-cta-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent); color: white;
+      padding: 9px 20px; border-radius: 50px;
+      font-size: 0.88rem; font-weight: 600;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .soft-cta-btn:hover { background: var(--navy); transform: translateY(-1px); text-decoration: none; }
+
+    /* =============================================
+       NEWSLETTER
+    ============================================= */
+    .newsletter {
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      padding: 56px 24px; text-align: center;
+      color: white; position: relative; overflow: hidden;
+      margin-top: 56px;
+    }
+    .newsletter::before {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      top: -150px; right: -80px;
+    }
+    .newsletter-inner { position: relative; z-index: 1; max-width: 500px; margin: 0 auto; }
+    .newsletter h2 { font-family: var(--font-head); font-size: clamp(1.4rem, 3vw, 1.9rem); margin-bottom: 10px; }
+    .newsletter p { color: rgba(255,255,255,0.75); font-size: 0.95rem; margin-bottom: 26px; }
+    .newsletter-form { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .newsletter-form input {
+      flex: 1; min-width: 210px; max-width: 300px;
+      padding: 11px 18px; border: none; border-radius: 50px;
+      font-family: var(--font-body); font-size: 0.9rem;
+      outline: none; color: var(--ink);
+    }
+    .newsletter-form button {
+      background: var(--accent); color: white; border: none;
+      padding: 11px 22px; border-radius: 50px;
+      font-family: var(--font-body); font-size: 0.9rem;
+      font-weight: 600; cursor: pointer;
+      transition: background var(--transition);
+      width: auto !important;
+    }
+    .newsletter-form button:hover { background: #2270ee; }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.6);
+      padding: 40px 24px 28px;
+      text-align: center; font-size: 0.85rem;
+    }
+    footer a { color: rgba(255,255,255,0.7); }
+    footer a:hover { color: white; }
+    .footer-links { margin-top: 10px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+
+    /* =============================================
+       FADE IN
+    ============================================= */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex !important; }
+      .science-grid { grid-template-columns: 1fr; }
+      .myth-row { grid-template-columns: 1fr; }
+      .soft-cta { flex-direction: column; text-align: center; }
+      .pomodoro-visual { gap: 4px; }
+      .pom-block { min-width: 80px; padding: 14px 12px; }
+    }
+    @media (min-width: 769px) {
+      .hamburger { display: none !important; }
+      .nav-links { display: flex !important; }
+    }
+    @media (max-width: 500px) {
+      .article-hero { padding: 48px 20px 40px; }
+      .article-wrap { padding: 36px 18px 60px; }
+      .pom-arrow { display: none; }
+      .pomodoro-visual { gap: 8px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Reading progress bar (tomato red — thematic!) -->
+  <div class="reading-bar" id="readingBar"></div>
+
+  <!-- ==========================================
+       NAVBAR
+  =========================================== -->
+  <header>
+    <nav class="nav-inner">
+      <a href="/" class="nav-logo">
+        <div class="logo-icon">⏱</div>
+        Floxen Study Hours
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog" class="active">Blog</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/register" class="nav-cta">Start Studying →</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+
+  <!-- ==========================================
+       HERO
+  =========================================== -->
+  <section class="article-hero">
+    <div class="hero-inner">
+      <div class="breadcrumb">
+        <a href="/blog">Blog</a>
+        <span>/</span>
+        <span>Study Science</span>
+      </div>
+      <span class="article-tag">🍅 Study Science</span>
+      <h1>The Pomodoro Technique —<br><em>Does It Really Work</em> for Students?</h1>
+      <p class="subtitle">Everyone talks about it. Science has studied it. But most students still fail at it. Here's the honest truth about timed study sessions — and what actually matters more.</p>
+      <div class="article-meta">
+        <span>📅 May 2026</span>
+        <span>⏱ 7 min read</span>
+        <span>👤 Floxen Team</span>
+        <span>🎯 JEE · NEET · Board Exams · College</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       ARTICLE BODY
+  =========================================== -->
+  <main class="article-wrap">
+
+    <a href="/blog" class="back-link">← Back to Blog</a>
+
+    <!-- Lead -->
+    <p class="lead">
+      Francesco Cirillo invented the Pomodoro Technique in the late 1980s using a tomato-shaped kitchen timer. The idea was simple: work for 25 minutes, rest for 5, repeat. Decades later, it is one of the most recommended study methods in the world. But does it actually work — especially for Indian students juggling board exams, JEE, NEET, and college deadlines all at once?
+    </p>
+
+    <!-- What is Pomodoro -->
+    <h2>What Is the Pomodoro Technique?</h2>
+    <p>
+      The method is straightforward. You divide your study time into fixed intervals called <strong>pomodoros</strong> — each 25 minutes of focused work followed by a 5-minute break. After completing four pomodoros, you take a longer break of 15 to 30 minutes.
+    </p>
+
+    <!-- Visual explainer -->
+    <div class="pomodoro-visual fade-in">
+      <div class="pom-block work">
+        <div class="pom-icon">🍅</div>
+        <div class="pom-time">25m</div>
+        <div class="pom-label">Focus</div>
+      </div>
+      <div class="pom-arrow">→</div>
+      <div class="pom-block rest">
+        <div class="pom-icon">☕</div>
+        <div class="pom-time">5m</div>
+        <div class="pom-label">Short break</div>
+      </div>
+      <div class="pom-arrow">→</div>
+      <div class="pom-block work">
+        <div class="pom-icon">🍅</div>
+        <div class="pom-time">25m</div>
+        <div class="pom-label">Focus</div>
+      </div>
+      <div class="pom-arrow">→</div>
+      <div class="pom-block rest">
+        <div class="pom-icon">☕</div>
+        <div class="pom-time">5m</div>
+        <div class="pom-label">Short break</div>
+      </div>
+      <div class="pom-arrow">→</div>
+      <div class="pom-block long-rest">
+        <div class="pom-icon">🛌</div>
+        <div class="pom-time">20m</div>
+        <div class="pom-label">Long break</div>
+      </div>
+      <div class="pom-repeat">Repeat 4 cycles → Long break → Repeat</div>
+    </div>
+
+    <p>
+      The core idea behind it is that the human brain cannot sustain deep focus indefinitely. Forcing yourself to study for 3 hours straight without a break does not produce 3 hours of learning — it produces maybe 45 minutes of real retention, wrapped in a lot of exhaustion and distraction.
+    </p>
+
+    <hr class="divider" />
+
+    <!-- What science says -->
+    <h2>What Does the Science Actually Say?</h2>
+    <p>
+      The good news is that the science behind Pomodoro is solid — even if the specific 25-minute number is somewhat arbitrary.
+    </p>
+
+    <div class="science-grid fade-in">
+      <div class="science-card">
+        <div class="sc-icon">🧠</div>
+        <h4>Spaced attention works</h4>
+        <p>Research in cognitive science consistently shows that attention naturally fluctuates in cycles of roughly 20–40 minutes. Working with these cycles instead of against them improves both focus and retention.</p>
+      </div>
+      <div class="science-card">
+        <div class="sc-icon">💤</div>
+        <h4>Breaks consolidate memory</h4>
+        <p>Short rest periods after learning allow the brain to consolidate new information. Studies show students who take regular breaks remember significantly more than those who study continuously.</p>
+      </div>
+      <div class="science-card">
+        <div class="sc-icon">📈</div>
+        <h4>Urgency improves output</h4>
+        <p>A countdown timer creates mild time pressure. This activates a psychological state where you work more efficiently — knowing a break is coming makes it easier to stay on task right now.</p>
+      </div>
+      <div class="science-card">
+        <div class="sc-icon">🔄</div>
+        <h4>Consistency beats intensity</h4>
+        <p>Students who study in regular, moderate sessions across multiple days retain far more than those who do one long cram session. Pomodoro naturally builds this habit of consistent, structured study.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote fade-in">
+      <p>"The technique itself is not magic. The 25 minutes is not magic. What is magic is the decision to start — and the structure that makes starting feel less overwhelming."</p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Why students fail -->
+    <h2>So Why Do Most Students Still Fail at It?</h2>
+    <p>
+      If the science is solid, why do so many students try Pomodoro for two days and give up? The answer is almost never the technique itself. It is the <em>environment</em> around it.
+    </p>
+
+    <div class="myth-grid fade-in">
+      <div class="myth-row">
+        <div class="myth-box myth">
+          <strong>❌ What students think</strong>
+          The timer will keep me focused automatically.
+        </div>
+        <div class="myth-box truth">
+          <strong>✅ What actually happens</strong>
+          The timer only works if your environment removes the option to get distracted.
+        </div>
+      </div>
+      <div class="myth-row">
+        <div class="myth-box myth">
+          <strong>❌ What students think</strong>
+          25 minutes is short enough that I won't check YouTube.
+        </div>
+        <div class="myth-box truth">
+          <strong>✅ What actually happens</strong>
+          YouTube's autoplay and recommendations derail sessions in under 3 minutes.
+        </div>
+      </div>
+      <div class="myth-row">
+        <div class="myth-box myth">
+          <strong>❌ What students think</strong>
+          I just need more willpower during the 25 minutes.
+        </div>
+        <div class="myth-box truth">
+          <strong>✅ What actually happens</strong>
+          Willpower depletes. Environment design lasts all day.
+        </div>
+      </div>
+      <div class="myth-row">
+        <div class="myth-box myth">
+          <strong>❌ What students think</strong>
+          I'll use my phone timer and keep my phone next to me.
+        </div>
+        <div class="myth-box truth">
+          <strong>✅ What actually happens</strong>
+          Notifications, Instagram, and WhatsApp kill the session within minutes.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout tomato fade-in">
+      <div class="callout-icon">🍅</div>
+      <div class="callout-body">
+        <strong>The real problem with Pomodoro failure</strong>
+        <p>Most students set a 25-minute timer and then keep YouTube, Instagram, and WhatsApp open in other tabs. No technique survives that environment. The timer is not the solution — removing the distractions is.</p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- What actually matters -->
+    <h2>What Actually Matters More Than the Technique</h2>
+    <p>
+      The Pomodoro Technique is a container. What you put inside it determines whether it works. Here is what the research and experience of high-performing students consistently shows actually matters:
+    </p>
+
+    <ul class="matters-list">
+      <li class="fade-in">
+        <div class="matters-icon">🚫</div>
+        <div class="matters-text">
+          <strong>Removing distractions before starting</strong>
+          <p>Close every unrelated tab. Put your phone in another room or face-down. If you are studying on YouTube, use a focused player that removes the sidebar and recommendations. Do this before the timer starts — not after you have already been distracted.</p>
+        </div>
+      </li>
+      <li class="fade-in">
+        <div class="matters-icon">🎯</div>
+        <div class="matters-text">
+          <strong>Defining exactly what you will study</strong>
+          <p>Vague intentions produce vague sessions. Before hitting start, write down one specific thing: "I will finish Chapter 4 thermodynamics problems" or "I will watch the integration by parts lecture and take notes on it." Specific goals prevent your brain from wandering.</p>
+        </div>
+      </li>
+      <li class="fade-in">
+        <div class="matters-icon">📝</div>
+        <div class="matters-text">
+          <strong>Taking notes actively during the session</strong>
+          <p>Students who write while they watch or read retain far more. The act of summarising in your own words forces comprehension, not just passive consumption. A notepad open alongside your study material changes everything.</p>
+        </div>
+      </li>
+      <li class="fade-in">
+        <div class="matters-icon">📊</div>
+        <div class="matters-text">
+          <strong>Tracking what you actually completed</strong>
+          <p>A log of your sessions — what topic, how long, which resource — creates accountability and shows you real progress. This is far more motivating than just knowing you "studied for 2 hours."</p>
+        </div>
+      </li>
+      <li class="fade-in">
+        <div class="matters-icon">🔁</div>
+        <div class="matters-text">
+          <strong>Repeating consistently, not perfectly</strong>
+          <p>Missing one session does not matter. Missing a week does. The students who benefit most from structured study techniques are not those who follow them perfectly — they are those who come back to them consistently after every break.</p>
+        </div>
+      </li>
+    </ul>
+
+    <div class="callout success fade-in">
+      <div class="callout-icon">✅</div>
+      <div class="callout-body">
+        <strong>For JEE / NEET / Board exam students specifically</strong>
+        <p>High-stakes exams reward deep understanding built over time — not last-minute cramming. Structured, distraction-free sessions of 25–45 minutes are far more effective than 4-hour marathons where attention drifts every 10 minutes. The Pomodoro method, done in a clean environment, directly supports this kind of study.</p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Verdict -->
+    <h2>The Verdict — Does It Work?</h2>
+    <p>
+      Yes — but only when you fix the environment around it. The Pomodoro Technique is not a magic solution. It is a framework that works when the distractions are removed, the goal is defined, and the sessions are tracked. Used this way, it is one of the most effective study structures available.
+    </p>
+    <p>
+      Used without removing distractions — with YouTube recommendations open, phone notifications buzzing, and no clear goal for the session — it is just a tomato-shaped timer doing nothing.
+    </p>
+
+    <div class="callout amber fade-in">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>Quick tip — adjust the intervals for your subject</strong>
+        <p>25 minutes works well for reading and problem-solving. For watching video lectures, try matching your interval to the video length — finish a full lecture in one focused session rather than cutting it midway. What matters is the distraction-free focus, not the specific number of minutes.</p>
+      </div>
+    </div>
+
+    <!-- Soft CTA -->
+    <div class="soft-cta fade-in">
+      <div class="soft-cta-icon">⏱</div>
+      <div class="soft-cta-text">
+        <h3>Study YouTube lectures distraction-free</h3>
+        <p>If YouTube is part of your study routine, Floxen Study Hours gives you a clean, focused player — no sidebar, no recommendations, no Shorts. Pair it with any study technique, including Pomodoro, and your sessions will be dramatically more effective.</p>
+        <a href="/register" class="soft-cta-btn">Try Floxen — it's free →</a>
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- ==========================================
+       NEWSLETTER
+  =========================================== -->
+  <section class="newsletter fade-in">
+    <div class="newsletter-inner">
+      <h2>More Study Science in Your Inbox</h2>
+      <p>Weekly tips on focus, productivity, and smarter studying — built for Indian students.</p>
+      <form class="newsletter-form" onsubmit="handleSubscribe(event)">
+        <input type="email" placeholder="Your email address" required aria-label="Email" />
+        <button type="submit">Subscribe →</button>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       FOOTER
+  =========================================== -->
+  <footer>
+    <div>© 2026 Floxen Study Hours. Built with ❤ by Bhavishya.</div>
+    <div class="footer-links">
+      <a href="/blog">Blog</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </footer>
+
+
+  <!-- ==========================================
+       JAVASCRIPT
+  =========================================== -->
+  <script>
+    /* ---- Hamburger ---- */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', isOpen);
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    /* ---- Reading progress bar ---- */
+    window.addEventListener('scroll', () => {
+      const doc    = document.documentElement;
+      const scroll = doc.scrollTop || document.body.scrollTop;
+      const height = doc.scrollHeight - doc.clientHeight;
+      document.getElementById('readingBar').style.width = (scroll / height * 100) + '%';
+    });
+
+    /* ---- Fade in ---- */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 70);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    /* ---- Newsletter ---- */
+    function handleSubscribe(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.textContent = '✓ Subscribed!';
+      btn.style.background = '#22c55e';
+      e.target.querySelector('input').value = '';
+      setTimeout(() => { btn.textContent = 'Subscribe →'; btn.style.background = ''; }, 3000);
+    }
+  </script>
+
+</body>
+</html>
