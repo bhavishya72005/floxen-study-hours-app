@@ -2,16 +2,20 @@
 # Imports
 # ========================
 
-from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
-from email.message import EmailMessage
-import smtplib
-from pymongo import MongoClient
 import os
-from dotenv import load_dotenv
-from openai import OpenAI, OpenAIError
-from flask import send_from_directory
+import smtplib
 from datetime import datetime
+from email.message import EmailMessage
 from zoneinfo import ZoneInfo
+
+from dotenv import load_dotenv
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+from flask import send_from_directory
+from openai import OpenAI, OpenAIError
+from pymongo import MongoClient
+
+from apscheduler.schedulers.background import BackgroundScheduler
+from reminder import send_daily_reminders
 
 
 # ========================
@@ -113,6 +117,10 @@ def blog_how_floxen_works():
 @app.route("/blog/stop-youtube-distraction")
 def blog_stop_distraction():
     return render_template("blogs/stop-youtube-distraction.html")
+
+@app.route("/blog/pomodoro-technique")
+def blog_pomodoro():
+    return render_template("blogs/pomodoro-technique.html")
 
 # ---------- AUTH ----------
 @app.route("/login", methods=["GET", "POST"])
@@ -392,5 +400,19 @@ def google_verify():
 # Run Server
 # ========================
 if __name__ == "__main__":
+    # ========================
+    # Daily Reminder Scheduler
+    # Runs every day at 8:00 PM IST
+    # ========================
+    scheduler = BackgroundScheduler(timezone="Asia/Kolkata")
+    scheduler.add_job(
+        send_daily_reminders,
+        trigger="cron",
+        hour=14,  # 8 PM IST
+        minute=15,
+        id="daily_reminder",
+        replace_existing=True
+    )
+    scheduler.start()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
