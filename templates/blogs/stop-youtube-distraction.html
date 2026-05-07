@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="How to stop YouTube distractions while studying — practical tips for students who use YouTube to learn but keep getting pulled into Shorts and recommendations." />
+  <meta name="keywords" content="stop youtube distraction, study focus, youtube for students, distraction free studying, floxen study hours" />
+  <title>How to Stop YouTube Distractions While Studying | Floxen Blog</title>
+
+  <!-- Fonts: Fraunces (editorial serif) + Outfit (clean body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,400&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       VARIABLES
+    ============================================= */
+    :root {
+      --navy:        #0A2463;
+      --blue:        #1E5FA8;
+      --accent:      #3A86FF;
+      --pale:        #EEF4FF;
+      --border:      #C8D9F5;
+      --white:       #FFFFFF;
+      --ink:         #0D1B2A;
+      --ink-mid:     #3D4F63;
+      --ink-light:   #7A8FA6;
+      --red-soft:    #FFF0F0;
+      --red-border:  #FFD0D0;
+      --red-text:    #C0392B;
+      --green-soft:  #F0FFF4;
+      --green-border:#B2DFCC;
+      --green-text:  #1A7A4A;
+      --font-head:   'Fraunces', Georgia, serif;
+      --font-body:   'Outfit', sans-serif;
+      --max:         720px;
+      --radius:      12px;
+      --transition:  0.25s ease;
+    }
+
+    /* =============================================
+       RESET
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--white);
+      color: var(--ink);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; display: block; }
+
+    /* =============================================
+       NAVBAR
+    ============================================= */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(30, 95, 168, 0.25);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(100, 180, 255, 0.3);
+      box-shadow: 0 4px 24px rgba(10,36,99,0.15), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      color: white;
+      font-weight: 700;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .nav-logo .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: white; text-decoration: none; }
+
+    .nav-cta {
+      background: var(--accent) !important;
+      color: white !important;
+      padding: 8px 18px !important;
+      border-radius: 50px !important;
+      font-weight: 600 !important;
+    }
+    .nav-cta:hover { background: var(--navy) !important; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: white;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 64px; left: 0; right: 0;
+        background: rgba(10, 36, 99, 0.92);
+        backdrop-filter: blur(16px);
+        padding: 16px 24px 20px;
+        gap: 14px;
+        border-bottom: 1px solid rgba(100,180,255,0.3);
+      }
+      .nav-links.open a { color: white; font-size: 1rem; }
+    }
+
+    /* =============================================
+       HERO BANNER (article top)
+    ============================================= */
+    .article-hero {
+      margin-top: 64px; /* navbar height */
+      background: linear-gradient(135deg, #0A2463 0%, #1a3e8c 50%, #1E5FA8 100%);
+      padding: 64px 24px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative rings */
+    .article-hero::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      border: 60px solid rgba(255,255,255,0.04);
+      top: -200px; right: -100px;
+    }
+    .article-hero::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      border: 40px solid rgba(255,255,255,0.04);
+      bottom: -120px; left: -60px;
+    }
+
+    .article-hero-inner { position: relative; z-index: 1; max-width: var(--max); margin: 0 auto; }
+
+    .breadcrumb {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; }
+    .breadcrumb span { color: rgba(255,255,255,0.35); }
+
+    .article-tag {
+      display: inline-block;
+      background: rgba(58,134,255,0.3);
+      color: #a8c8ff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 50px;
+      border: 1px solid rgba(58,134,255,0.4);
+      margin-bottom: 20px;
+    }
+
+    .article-hero h1 {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      color: white;
+      line-height: 1.2;
+      margin-bottom: 18px;
+      font-weight: 900;
+    }
+
+    .article-hero .subtitle {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 540px;
+      margin: 0 auto 24px;
+      line-height: 1.7;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+    }
+    .article-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* =============================================
+       ARTICLE BODY
+    ============================================= */
+    .article-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    /* Progress bar at top */
+    .reading-bar {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      height: 3px;
+      background: var(--accent);
+      width: 0%;
+      z-index: 99;
+      transition: width 0.1s linear;
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* Lead paragraph */
+    .lead {
+      font-size: 1.1rem;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Section headings */
+    .article-wrap h2 {
+      font-family: var(--font-head);
+      font-size: 1.55rem;
+      color: var(--navy);
+      margin: 2.5rem 0 1rem;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+
+    .article-wrap h3 {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      color: var(--blue);
+      margin: 1.8rem 0 0.7rem;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    /* Body paragraphs */
+    .article-wrap p {
+      font-size: 1rem;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ---- CALLOUT BOXES ---- */
+    .callout {
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin: 1.8rem 0;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .callout-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+
+    .callout-body { flex: 1; }
+    .callout-body strong { display: block; margin-bottom: 4px; font-size: 0.9rem; }
+    .callout-body p { margin: 0; font-size: 0.92rem; line-height: 1.65; }
+
+    .callout.danger  { background: var(--red-soft);   border: 1px solid var(--red-border);   color: var(--red-text); }
+    .callout.success { background: var(--green-soft);  border: 1px solid var(--green-border);  color: var(--green-text); }
+    .callout.info    { background: var(--pale);         border: 1px solid var(--border);         color: var(--navy); }
+
+    /* ---- STAT CARDS ---- */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 2rem 0;
+    }
+
+    .stat-card {
+      background: var(--pale);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--ink-light);
+      line-height: 1.4;
+    }
+
+    /* ---- TIPS LIST ---- */
+    .tips-list {
+      list-style: none;
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tips-list li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+
+    .tips-list li:hover {
+      box-shadow: 0 4px 16px rgba(10,36,99,0.1);
+      transform: translateX(4px);
+    }
+
+    .tip-num {
+      width: 28px; height: 28px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .tip-text strong { display: block; color: var(--navy); margin-bottom: 4px; font-size: 0.95rem; }
+    .tip-text p { margin: 0; font-size: 0.88rem; color: var(--ink-mid); line-height: 1.6; }
+
+    /* ---- DIVIDER ---- */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* ---- HIGHLIGHT QUOTE ---- */
+    .pull-quote {
+      border-left: 4px solid var(--accent);
+      padding: 16px 20px;
+      margin: 2rem 0;
+      background: var(--pale);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+
+    .pull-quote p {
+      font-family: var(--font-head);
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--navy);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* ---- CTA BANNER ---- */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      border-radius: 16px;
+      padding: 36px 32px;
+      text-align: center;
+      color: white;
+      margin: 3rem 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      top: -60px; right: -40px;
+    }
+
+    .cta-banner h3 {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: white;
+      position: relative;
+    }
+
+    .cta-banner p {
+      color: rgba(255,255,255,0.78);
+      font-size: 0.95rem;
+      margin-bottom: 22px;
+      position: relative;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: white;
+      padding: 12px 26px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: background var(--transition), transform var(--transition);
+      position: relative;
+    }
+    .cta-btn:hover { background: white; color: var(--navy); transform: translateY(-2px); text-decoration: none; }
+
+    /* ---- BACK TO BLOG ---- */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: gap var(--transition);
+    }
+    .back-link:hover { gap: 10px; text-decoration: none; }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.6);
+      padding: 40px 24px 28px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    footer a { color: rgba(255,255,255,0.7); }
+    footer a:hover { color: white; }
+
+    .footer-links { margin-top: 8px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+
+    /* =============================================
+       FADE IN
+    ============================================= */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 600px) {
+      .stat-row { grid-template-columns: 1fr; }
+      .article-hero { padding: 48px 20px 40px; }
+      .cta-banner { padding: 28px 20px; }
+      .article-wrap { padding: 36px 20px 60px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Reading progress bar -->
+  <div class="reading-bar" id="readingBar"></div>
+
+  <!-- ==========================================
+       NAVBAR
+  =========================================== -->
+  <header>
+    <nav class="nav-inner">
+      <a href="/" class="nav-logo">
+        <div class="logo-icon">⏱</div>
+        Floxen Study Hours
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/register" class="nav-cta">Start Studying →</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+
+  <!-- ==========================================
+       ARTICLE HERO
+  =========================================== -->
+  <section class="article-hero">
+    <div class="article-hero-inner">
+
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="/blog">Blog</a>
+        <span>/</span>
+        <span>Focus Tips</span>
+      </div>
+
+      <span class="article-tag">📵 Focus Tips</span>
+      <h1>How to Stop YouTube Distractions While Studying</h1>
+      <p class="subtitle">YouTube is the world's biggest classroom — and its biggest trap. Here's how to use it only for learning, not for endless scrolling.</p>
+
+      <div class="article-meta">
+        <span>📅 May 2026</span>
+        <span>⏱ 6 min read</span>
+        <span>👤 Floxen Team</span>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       ARTICLE BODY
+  =========================================== -->
+  <main class="article-wrap">
+
+    <a href="/blog" class="back-link">← Back to Blog</a>
+
+    <!-- Lead -->
+    <p class="lead">
+      You open YouTube to watch a physics lecture. Forty minutes later you are three videos deep into "Top 10 most satisfying machines" and the lecture hasn't started yet. Sound familiar? You are not weak-willed — YouTube is literally engineered to do this to you. But there are ways to fight back.
+    </p>
+
+    <!-- Stats -->
+    <div class="stat-row fade-in">
+      <div class="stat-card">
+        <div class="stat-num">2B+</div>
+        <div class="stat-label">Users log into YouTube every month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">40%</div>
+        <div class="stat-label">Of watch time comes from recommendations</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">30s</div>
+        <div class="stat-label">Average time before a student gets distracted</div>
+      </div>
+    </div>
+
+    <h2>Why YouTube Is So Hard to Study On</h2>
+
+    <p>
+      YouTube's recommendation algorithm has one job — keep you watching as long as possible. Every thumbnail, every autoplay, every notification is a carefully designed hook. When you are studying, your brain is already in a slightly tired state. That makes you <em>more</em> vulnerable to these hooks, not less.
+    </p>
+
+    <div class="callout danger fade-in">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <strong>The real problem</strong>
+        <p>It's not that you lack discipline. It's that you are using a distraction machine as a study tool. The environment itself is working against you.</p>
+      </div>
+    </div>
+
+    <p>
+      The sidebar fills with videos designed to look more interesting than your lecture. Shorts autoplay the moment you pause. Comments pull you into arguments. Autoplay queues up the next unrelated video before you even finish the one you came for. None of this is accidental — it is all by design.
+    </p>
+
+    <div class="pull-quote fade-in">
+      <p>"The best students don't have more willpower. They design their environment so willpower isn't needed."</p>
+    </div>
+
+    <hr class="divider" />
+
+    <h2>7 Practical Ways to Stop YouTube Distractions</h2>
+
+    <ul class="tips-list">
+
+      <li class="fade-in">
+        <div class="tip-num">1</div>
+        <div class="tip-text">
+          <strong>Use a distraction-free YouTube wrapper</strong>
+          <p>Tools like Floxen Study Hours let you paste your YouTube video URL and watch it in a clean, fullscreen environment — no sidebar, no recommendations, no Shorts. The video is all you see.</p>
+        </div>
+      </li>
+
+      <li class="fade-in">
+        <div class="tip-num">2</div>
+        <div class="tip-text">
+          <strong>Set a timer before you press play</strong>
+          <p>Decide your study duration before starting — 45 minutes, 1 hour, whatever fits. A visible countdown timer creates a psychological boundary. When the timer runs out, you stop. No "just one more video."</p>
+        </div>
+      </li>
+
+      <li class="fade-in">
+        <div class="tip-num">3</div>
+        <div class="tip-text">
+          <strong>Bookmark your video before opening YouTube</strong>
+          <p>Search for your lecture on YouTube, copy the link, then close YouTube immediately. Open your study tool and paste the link there. You never have to browse the homepage at all.</p>
+        </div>
+      </li>
+
+      <li class="fade-in">
+        <div class="tip-num">4</div>
+        <div class="tip-text">
+          <strong>Turn off autoplay</strong>
+          <p>In YouTube settings, disable autoplay. This one change alone removes the biggest trap — the video that starts playing the moment yours ends, before you can close the tab.</p>
+        </div>
+      </li>
+
+      <li class="fade-in">
+        <div class="tip-num">5</div>
+        <div class="tip-text">
+          <strong>Use browser extensions to block the homepage</strong>
+          <p>Extensions like "Unhook" or "DF YouTube" hide the YouTube homepage, Shorts feed, and recommendations entirely. You can still search — you just won't see the trap content.</p>
+        </div>
+      </li>
+
+      <li class="fade-in">
+        <div class="tip-num">6</div>
+        <div class="tip-text">
+          <strong>Take notes while watching</strong>
+          <p>When your hands are busy writing, your brain is actively engaged with the content. Students who take notes during video lectures retain significantly more and are less likely to drift to other videos.</p>
+        </div>
+      </li>
+
+      <li class="fade-in">
+        <div class="tip-num">7</div>
+        <div class="tip-text">
+          <strong>Track your study sessions</strong>
+          <p>Keeping a log of what you watched, when, and for how long creates accountability. When you can see your progress, you are less likely to abandon a session for a distraction.</p>
+        </div>
+      </li>
+
+    </ul>
+
+    <hr class="divider" />
+
+    <h2>What Actually Works Long Term</h2>
+
+    <p>
+      One-time tricks fade. What works long term is changing your <em>system</em>, not your willpower. The most focused students are not the ones with the strongest discipline — they are the ones who removed the distractions from their environment entirely.
+    </p>
+
+    <div class="callout success fade-in">
+      <div class="callout-icon">✅</div>
+      <div class="callout-body">
+        <strong>The system approach</strong>
+        <p>Decide the video before opening YouTube. Use a dedicated study tool. Set a timer. Take notes. Log your session. Repeat. Each step removes one moment where distraction could sneak in.</p>
+      </div>
+    </div>
+
+    <p>
+      YouTube is genuinely one of the best learning platforms in the world. Khan Academy, MIT OpenCourseWare, countless university professors, coding tutorials, language lessons — it's all free, and it's all there. The problem was never YouTube itself. The problem was using it raw, without any structure around it.
+    </p>
+
+    <div class="callout info fade-in">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>Quick tip for Indian students</strong>
+        <p>If you are preparing for JEE, NEET, or board exams, YouTube has some of the best free content available. Channels like Physics Wallah, Vedantu, and Unacademy post full lectures. The content is excellent — you just need a distraction-free way to watch it.</p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <h2>How Floxen Study Hours Solves This</h2>
+
+    <p>
+      Floxen Study Hours was built specifically for this problem. You paste your YouTube video URL, set your study duration, and the video plays in a clean fullscreen mode — no recommendations, no sidebar, no Shorts. A timer overlay counts down your session. A built-in notepad lets you take notes without switching tabs. And when your session ends, your activity is logged automatically so you can track your progress over time.
+    </p>
+
+    <p>
+      It does not require installing anything. It does not cost anything. It just removes everything that was getting in the way.
+    </p>
+
+    <!-- CTA -->
+    <div class="cta-banner fade-in">
+      <h3>Ready to Study Without Distractions?</h3>
+      <p>Paste your first YouTube study video into Floxen and start your first focused session today — completely free.</p>
+      <a href="/register" class="cta-btn">Try Floxen Study Hours →</a>
+    </div>
+
+  </main>
+
+
+  <!-- ==========================================
+       FOOTER
+  =========================================== -->
+  <footer>
+    <div>© 2026 Floxen Study Hours. Built with ❤ by Bhavishya.</div>
+    <div class="footer-links">
+      <a href="/blog">Blog</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </footer>
+
+
+  <!-- ==========================================
+       JAVASCRIPT
+  =========================================== -->
+  <script>
+    /* ---- Hamburger ---- */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', isOpen);
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    /* ---- Reading progress bar ---- */
+    window.addEventListener('scroll', () => {
+      const doc    = document.documentElement;
+      const scroll = doc.scrollTop || document.body.scrollTop;
+      const height = doc.scrollHeight - doc.clientHeight;
+      const pct    = (scroll / height) * 100;
+      document.getElementById('readingBar').style.width = pct + '%';
+    });
+
+    /* ---- Scroll fade-in ---- */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

@@ -38,9 +38,28 @@
 </head>
 
 <body>
-
+<!-- ========== HEADER (outside everything) ========== -->
+<header>
+  <nav class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Floxen Study Hours Home">
+      <div class="logo-icon">⏱</div>
+      Floxen Study Hours
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/register" class="nav-cta">Start Studying →</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
 <!-- ========== HERO SECTION ========== -->
 <div class="welcome-section">
+
+
     <div class="logo-hover-wrapper" tabindex="0" aria-label="Floxen Study Hours logo animation">
         <img src="{{ url_for('static', filename='webdf.jpg') }}" alt="Floxen Study Hours logo placeholder" class="logo-placeholder">
         <video class="logo-animation" loop muted playsinline preload="metadata">

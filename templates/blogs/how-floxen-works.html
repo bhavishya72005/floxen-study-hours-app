@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="How Floxen Study Hours Works — A Complete Guide. Learn how to use Floxen to study YouTube videos without distractions, recommendations, or rabbit holes." />
+  <title>How Floxen Study Hours Works — A Complete Guide | Floxen Blog</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --blue-deep:    #0A2463;
+      --blue-mid:     #1E5FA8;
+      --blue-light:   #3A86FF;
+      --blue-pale:    #E8F0FE;
+      --blue-border:  #C2D4F5;
+      --white:        #FFFFFF;
+      --text-dark:    #0D1B2A;
+      --text-mid:     #4A5568;
+      --text-light:   #718096;
+      --font-head:    'Playfair Display', Georgia, serif;
+      --font-body:    'DM Sans', sans-serif;
+      --radius-sm:    6px;
+      --radius-md:    12px;
+      --radius-lg:    20px;
+      --shadow-card:  0 2px 16px rgba(10, 36, 99, 0.08);
+      --transition:   0.25s ease;
+      --max-width:    900px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text-dark);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding-top: 64px; /* ✅ FIX: stops content hiding behind fixed navbar */
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* =============================================
+       READING PROGRESS BAR
+    ============================================= */
+    .reading-bar {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      height: 3px;
+      background: var(--blue-light);
+      width: 0%;
+      z-index: 99;
+      transition: width 0.1s linear;
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* =============================================
+       NAVBAR — FIXED + GLASSY BLUE
+    ============================================= */
+    header {
+      position: fixed;      /* ✅ FIX: was sticky, now fixed */
+      top: 0;
+      left: 0;              /* ✅ FIX: added */
+      right: 0;             /* ✅ FIX: added */
+      z-index: 100;
+      background: rgba(30, 95, 168, 0.25);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(100, 180, 255, 0.3);
+      box-shadow: 0 4px 24px rgba(10,36,99,0.15), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      color: white;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .nav-logo .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--blue-light);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      transition: color var(--transition);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: white; }
+
+    .nav-cta {
+      background: var(--blue-light) !important;
+      color: white !important;
+      padding: 8px 18px !important;
+      border-radius: 50px !important;
+      font-weight: 600 !important;
+      font-size: 0.85rem !important;
+      transition: background var(--transition), transform var(--transition) !important;
+      border: none !important;
+      width: auto !important;
+      margin: 0 !important;
+    }
+    .nav-cta:hover { background: var(--blue-deep) !important; transform: translateY(-1px); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none !important;
+      border: none !important;
+      width: auto !important;
+      padding: 4px !important;
+      margin: 0 !important;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* Mobile nav open dropdown */
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: rgba(10, 36, 99, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(100,180,255,0.3);
+      padding: 16px 24px 20px;
+      gap: 14px;
+      box-shadow: 0 8px 24px rgba(10,36,99,0.2);
+    }
+    .nav-links.open a { color: white; font-size: 1rem; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .nav-links.open .nav-cta { border-bottom: none !important; text-align: center; }
+
+    /* =============================================
+       HERO
+    ============================================= */
+    .hero {
+      background: linear-gradient(135deg, var(--blue-deep) 0%, #1a3a7a 60%, var(--blue-mid) 100%);
+      color: var(--white);
+      padding: 56px 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before, .hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.08;
+      background: var(--white);
+    }
+    .hero::before { width: 400px; height: 400px; top: -120px; left: -80px; }
+    .hero::after  { width: 300px; height: 300px; bottom: -100px; right: -60px; }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .breadcrumb a { color: rgba(255,255,255,0.7); }
+    .breadcrumb a:hover { color: white; }
+    .breadcrumb span { color: rgba(255,255,255,0.35); }
+
+    .article-label {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      color: #a8c8ff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 50px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .hero h1 {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      line-height: 1.2;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    .article-meta {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.8);
+      margin-top: 20px;
+    }
+
+    /* =============================================
+       ARTICLE CONTENT
+    ============================================= */
+    .article-wrapper {
+      max-width: var(--max-width);
+      margin: 48px auto;
+      padding: 0 24px;
+    }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      color: var(--blue-light);
+      margin-bottom: 24px;
+      font-weight: 500;
+      transition: gap var(--transition);
+    }
+    .back-link:hover { gap: 10px; }
+
+    .article-content {
+      background: var(--white);
+      border: 1px solid var(--blue-border);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .article-content h2 {
+      font-family: var(--font-head);
+      font-size: 1.6rem;
+      color: var(--blue-deep);
+      margin-top: 36px;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    .article-content h2:first-child { margin-top: 0; }
+
+    .article-content h3 {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      color: var(--blue-mid);
+      margin-top: 28px;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .article-content p {
+      font-size: 0.95rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .article-content ul,
+    .article-content ol {
+      margin: 16px 0 16px 24px;
+      line-height: 1.9;
+    }
+
+    .article-content li {
+      font-size: 0.95rem;
+      color: var(--text-mid);
+      margin-bottom: 10px;
+    }
+
+    .article-content strong { color: var(--blue-deep); font-weight: 600; }
+
+    /* Divider */
+    .divider { border: none; border-top: 1px solid var(--blue-border); margin: 2rem 0; }
+
+    /* Highlight box */
+    .highlight-box {
+      background: var(--blue-pale);
+      border-left: 4px solid var(--blue-light);
+      padding: 20px 24px;
+      margin: 24px 0;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+    .highlight-box p { color: var(--blue-deep); margin: 0; font-size: 0.93rem; }
+
+    /* Comparison table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.92rem;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--blue-border);
+    }
+    .compare-table th {
+      background: var(--blue-pale);
+      color: var(--blue-deep);
+      font-weight: 600;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--blue-border);
+    }
+    .compare-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--blue-border);
+      color: var(--text-mid);
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:nth-child(even) td { background: var(--blue-pale); }
+    .compare-table .good { color: #1a7a4a; font-weight: 600; }
+    .compare-table .bad  { color: #c0392b; }
+
+    /* Steps */
+    .steps {
+      list-style: none;
+      margin: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--blue-pale);
+      border: 1px solid var(--blue-border);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+    }
+    .step-num {
+      width: 30px; height: 30px;
+      background: var(--blue-light);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-text strong { display: block; color: var(--blue-deep); margin-bottom: 3px; }
+    .step-text p { margin: 0; font-size: 0.88rem; color: var(--text-mid); line-height: 1.6; }
+
+    /* CTA section */
+    .cta-section {
+      background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid));
+      color: var(--white);
+      padding: 40px 32px;
+      border-radius: var(--radius-lg);
+      margin: 36px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      top: -60px; right: -40px;
+    }
+    .cta-section h3 {
+      font-family: var(--font-head);
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: white;
+      position: relative;
+    }
+    .cta-section p {
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      position: relative;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue-light);
+      color: white;
+      padding: 12px 26px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background var(--transition), transform var(--transition);
+      position: relative;
+    }
+    .cta-btn:hover { background: white; color: var(--blue-deep); transform: translateY(-2px); }
+
+    /* =============================================
+       NEWSLETTER
+    ============================================= */
+    .newsletter {
+      background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid));
+      padding: 56px 24px;
+      text-align: center;
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+      margin-top: 56px;
+    }
+    .newsletter::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      top: -200px; right: -100px;
+    }
+    .newsletter-inner { position: relative; z-index: 1; max-width: 520px; margin: 0 auto; }
+    .newsletter h2 { font-family: var(--font-head); font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 10px; }
+    .newsletter p { color: rgba(255,255,255,0.78); font-size: 0.95rem; margin-bottom: 28px; }
+    .newsletter-form { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .newsletter-form input {
+      flex: 1; min-width: 220px; max-width: 320px;
+      padding: 12px 18px; border: none; border-radius: 50px;
+      font-family: var(--font-body); font-size: 0.9rem; outline: none;
+      color: var(--text-dark);
+    }
+    .newsletter-form input::placeholder { color: var(--text-light); }
+    .newsletter-form button {
+      background: var(--blue-light); color: white; border: none;
+      padding: 12px 24px; border-radius: 50px;
+      font-family: var(--font-body); font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: background var(--transition), transform var(--transition);
+      width: auto !important;
+    }
+    .newsletter-form button:hover { background: #2270ee; transform: translateY(-1px); }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer {
+      background: var(--blue-deep);
+      color: rgba(255,255,255,0.75);
+      padding: 48px 24px 32px;
+    }
+    .footer-inner { max-width: var(--max-width); margin: 0 auto; }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 40px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 28px;
+    }
+    .footer-brand p { font-size: 0.88rem; line-height: 1.7; color: rgba(255,255,255,0.6); max-width: 280px; }
+    .footer-col h4 {
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 14px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a { font-size: 0.88rem; color: rgba(255,255,255,0.65); transition: color var(--transition); }
+    .footer-col ul a:hover { color: white; }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px; font-size: 0.8rem; color: rgba(255,255,255,0.4);
+    }
+    .footer-bottom a { color: rgba(255,255,255,0.55); transition: color var(--transition); }
+    .footer-bottom a:hover { color: white; }
+
+    /* =============================================
+       FADE IN
+    ============================================= */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex !important; }
+    }
+    @media (min-width: 769px) {
+      .hamburger { display: none !important; }
+      .nav-links { display: flex !important; }
+    }
+
+    @media (max-width: 900px) {
+      .article-content { padding: 32px 24px; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 40px 20px 32px; }
+      .hero h1 { font-size: 1.5rem; }
+      .article-meta { gap: 10px; font-size: 0.85rem; }
+      .article-content { padding: 24px 16px; }
+      .article-content h2 { font-size: 1.3rem; }
+      .article-wrapper { margin: 28px auto; }
+      .cta-section { padding: 28px 20px; }
+      .footer-top { grid-template-columns: 1fr; gap: 28px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .newsletter-form { flex-direction: column; }
+      .newsletter-form input { max-width: 100%; }
+      .compare-table { font-size: 0.82rem; }
+      .compare-table th, .compare-table td { padding: 10px 10px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Reading progress bar -->
+  <div class="reading-bar" id="readingBar"></div>
+
+  <!-- ==========================================
+       NAVBAR
+  =========================================== -->
+  <header>
+    <nav class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="Floxen Study Hours Home">
+        <div class="logo-icon">⏱</div>
+        Floxen Study Hours
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog" class="active">Blog</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/register" class="nav-cta">Start Studying →</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+
+  <!-- ==========================================
+       HERO
+  =========================================== -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <div class="breadcrumb">
+        <a href="/blog">Blog</a>
+        <span>/</span>
+        <span>Product Walkthrough</span>
+      </div>
+
+      <span class="article-label">📖 Product Walkthrough</span>
+      <h1>How Floxen Study Hours Works — A Complete Guide</h1>
+      <div class="article-meta">
+        <span>📅 May 2026</span>
+        <span>⏱ 5 min read</span>
+        <span>👤 Floxen Team</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       ARTICLE
+  =========================================== -->
+  <section class="article-wrapper fade-in">
+
+    <a href="/blog" class="back-link">← Back to Blog</a>
+
+    <article class="article-content">
+
+      <h2>The Problem with YouTube as a Study Tool</h2>
+      <p>
+        YouTube is the world's largest classroom. Any concept, formula, or topic — you can find a creator explaining it clearly. Indian students especially have access to some of the best exam prep channels: Unacademy, Physics Wallah, Dear Sir, and countless others.
+      </p>
+      <p>
+        But here's the trap: YouTube's recommendation algorithm is designed to keep you watching. You open a lecture on calculus, and suddenly the sidebar suggests a 10-minute Shorts compilation, a trending music video, or a meme compilation. Before you know it, 2 hours have passed and you've watched everything except the lecture you came for.
+      </p>
+      <p>
+        <strong>Floxen Study Hours was built to solve exactly this problem.</strong> It lets you watch YouTube like a focused student — not like a casual viewer.
+      </p>
+
+      <hr class="divider" />
+
+      <h2>How Floxen Works: The Core Features</h2>
+
+      <h3>1. Clean, Distraction-Free Video Player</h3>
+      <p>
+        When you paste a YouTube lecture link into Floxen, it strips away everything except the video itself — no comment section, no recommended videos, no sidebar suggestions. The interface is minimal and focused.
+      </p>
+      <ul>
+        <li><strong>Full-screen mode</strong> — escapes the sidebar and feed entirely</li>
+        <li><strong>Custom timer overlay</strong> — bar timer or digital timer, your choice</li>
+        <li><strong>Activity log</strong> — tracks every video you watched, date-wise</li>
+        <li><strong>Built-in AI chatbot</strong> — clears doubts without switching tabs</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p>💡 <strong>Pro Tip:</strong> The dashboard also includes a notepad with formatting tools — H1, H2, normal text, and bullet points. Take notes as you watch without ever switching to Notion or Google Docs.</p>
+      </div>
+
+      <h3>2. AI Chatbot — Doubts Cleared Instantly</h3>
+      <p>
+        Stuck on a concept while studying? The Floxen chatbot is right there on the dashboard. It answers general academic and study-related questions — keeping you in flow without switching tabs. <strong>It answers your doubts, not random conversation.</strong>
+      </p>
+
+      <h3>3. Menu — Notifications, Timer Style & Activity Log</h3>
+      <p>
+        A clean side menu gives you full control over your experience:
+      </p>
+      <ul>
+        <li><strong>Email notifications</strong> — On/off toggle for study reminders</li>
+        <li><strong>Timer settings</strong> — Switch between bar timer and digital timer</li>
+        <li><strong>Activity log</strong> — Full date-wise watch history with thumbnails, links, and watch time</li>
+      </ul>
+      <p>
+        <strong>What gets measured gets managed.</strong> When you can see your study hours in real-time, you are more likely to hit your daily goals.
+      </p>
+
+      <h3>4. Integrated Notepad</h3>
+      <p>
+        The dashboard notepad lets you take structured notes while you study. Format with H1, H2, normal paragraphs, and bullet points — all in one place, no tab switching required.
+      </p>
+
+      <div class="cta-section">
+        <h3>Ready to Study Smarter?</h3>
+        <p>Stop losing study hours to YouTube's recommendations. Sign up free — no credit card needed.</p>
+        <a href="/register" class="cta-btn">Start Free Today →</a>
+      </div>
+
+      <hr class="divider" />
+
+      <h2>Floxen vs Standard YouTube</h2>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>YouTube</th>
+            <th>Floxen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Recommendation sidebar</td>
+            <td class="bad">✗ Always visible</td>
+            <td class="good">✓ Completely hidden</td>
+          </tr>
+          <tr>
+            <td>Recommendations shown</td>
+            <td class="bad">✗ 20+ videos</td>
+            <td class="good">✓ Zero</td>
+          </tr>
+          <tr>
+            <td>Built-in study timer</td>
+            <td class="bad">✗ Not available</td>
+            <td class="good">✓ Bar + digital</td>
+          </tr>
+          <tr>
+            <td>AI doubt-clearing chatbot</td>
+            <td class="bad">✗ Needs addon</td>
+            <td class="good">✓ Built-in</td>
+          </tr>
+          <tr>
+            <td>Activity log with thumbnails</td>
+            <td class="bad">✗ Basic history only</td>
+            <td class="good">✓ Full date-wise log</td>
+          </tr>
+          <tr>
+            <td>Integrated notepad</td>
+            <td class="bad">✗ Not available</td>
+            <td class="good">✓ With formatting</td>
+          </tr>
+          <tr>
+            <td>Email study reminders</td>
+            <td class="bad">✗ Not available</td>
+            <td class="good">✓ Toggleable</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr class="divider" />
+
+      <h2>Getting Started — 3 Simple Steps</h2>
+
+      <ul class="steps">
+        <li>
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <strong>Sign up for free</strong>
+            <p>No credit card needed. Create your account on the homepage in under a minute.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <strong>Paste your YouTube lecture link</strong>
+            <p>Find your lecture on YouTube, copy the URL, and paste it into your Floxen dashboard.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <strong>Set your timer and hit Start</strong>
+            <p>Enter your study duration, press Start Study Session, and the video opens fullscreen — distraction-free.</p>
+          </div>
+        </li>
+      </ul>
+
+      <hr class="divider" />
+
+      <h2>The Takeaway</h2>
+      <p>
+        YouTube didn't break studying. The recommendations algorithm did. Floxen puts you back in control — giving you YouTube's best feature (tons of great educational content) without its worst feature (the attention-stealing algorithm).
+      </p>
+      <p>
+        You already know which lectures teach you best. Floxen just removes the noise so you can focus on learning from them.
+      </p>
+      <p>
+        <strong>Ready to study smarter?</strong> Sign up today — it's free, and there's no commitment required.
+      </p>
+
+    </article>
+  </section>
+
+
+  <!-- ==========================================
+       NEWSLETTER
+  =========================================== -->
+  <section class="newsletter fade-in">
+    <div class="newsletter-inner">
+      <h2>Get Study Tips in Your Inbox</h2>
+      <p>Join students who get weekly focus strategies, YouTube learning guides, and Floxen updates — free.</p>
+      <form class="newsletter-form" onsubmit="handleSubscribe(event)">
+        <input type="email" placeholder="Enter your email address" required aria-label="Email address" />
+        <button type="submit">Subscribe →</button>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       FOOTER
+  =========================================== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="nav-logo" style="color:white; margin-bottom:12px;">
+            <div class="logo-icon">⏱</div>
+            Floxen Study Hours
+          </div>
+          <p>A free productivity platform helping students watch YouTube lecture videos without distractions, recommendations, or rabbit holes.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="/register">Sign Up</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/blog">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Floxen Study Hours. Built with ❤ by Bhavishya.</span>
+        <span>
+          <a href="/privacy">Privacy</a> &nbsp;·&nbsp;
+          <a href="/terms">Terms</a> &nbsp;·&nbsp;
+          <a href="/contact">Contact</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ==========================================
+       JAVASCRIPT
+  =========================================== -->
+  <script>
+    /* ---- Hamburger ---- */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', isOpen);
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', false);
+      });
+    });
+
+    /* ---- Reading progress bar ---- */
+    window.addEventListener('scroll', () => {
+      const doc    = document.documentElement;
+      const scroll = doc.scrollTop || document.body.scrollTop;
+      const height = doc.scrollHeight - doc.clientHeight;
+      document.getElementById('readingBar').style.width = (scroll / height * 100) + '%';
+    });
+
+    /* ---- Fade in ---- */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    /* ---- Newsletter ---- */
+    function handleSubscribe(event) {
+      event.preventDefault();
+      const btn = event.target.querySelector('button');
+      btn.textContent = '✓ Subscribed!';
+      btn.style.background = '#22c55e';
+      event.target.querySelector('input').value = '';
+      setTimeout(() => {
+        btn.textContent = 'Subscribe →';
+        btn.style.background = '';
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>

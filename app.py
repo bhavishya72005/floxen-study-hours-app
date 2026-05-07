@@ -101,6 +101,19 @@ def mongo_test():
     users_collection.insert_one({"status": "connected"})
     return "MongoDB connected 🎉"
 
+# ---------- BLOG ----------
+@app.route("/blog")
+def blog():
+    return render_template("blogs/blog.html")
+
+@app.route("/blog/how-floxen-works")
+def blog_how_floxen_works():
+    return render_template("blogs/how-floxen-works.html")
+
+@app.route("/blog/stop-youtube-distraction")
+def blog_stop_distraction():
+    return render_template("blogs/stop-youtube-distraction.html")
+
 # ---------- AUTH ----------
 @app.route("/login", methods=["GET", "POST"])
 def login():
