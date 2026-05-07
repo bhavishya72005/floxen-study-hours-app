@@ -94,7 +94,7 @@ def send_notification_email(recipient: str, subject: str, body: str) -> bool:
 
 @app.route("/")
 def home():
-    return redirect(url_for("register"))
+    return render_template("floxenstudyhours.html")
 
 @app.route("/robots.txt")
 def robots_txt():
@@ -408,8 +408,8 @@ if __name__ == "__main__":
     scheduler.add_job(
         send_daily_reminders,
         trigger="cron",
-        hour=15,  # 8 PM IST
-        minute=29,
+        hour=8,  # 8 30 AM IST
+        minute=30,
         id="daily_reminder",
         replace_existing=True
     )
