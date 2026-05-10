@@ -404,12 +404,13 @@ if __name__ == "__main__":
     # Daily Reminder Scheduler
     # Runs every day at 8:00 PM IST
     # ========================
+    print("Before Starting the cron job")
     scheduler = BackgroundScheduler(timezone="Asia/Kolkata")
     scheduler.add_job(
         send_daily_reminders,
         trigger="cron",
-        hour=8,  # 8 30 AM IST
-        minute=30,
+        hour=17,  # 8 30 AM IST
+        minute=15,
         id="daily_reminder",
         replace_existing=True
     )
