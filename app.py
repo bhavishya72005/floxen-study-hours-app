@@ -17,6 +17,7 @@ from pymongo import MongoClient
 from apscheduler.schedulers.background import BackgroundScheduler
 from reminder import send_daily_reminders
 
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # ========================
 # App & Environment Setup
@@ -100,10 +101,6 @@ def home():
 def robots_txt():
     return send_from_directory("static", "robots.txt")
 
-@app.route("/mongo-test")
-def mongo_test():
-    users_collection.insert_one({"status": "connected"})
-    return "MongoDB connected 🎉"
 
 # ---------- BLOG ----------
 @app.route("/blog")
@@ -131,7 +128,7 @@ def login():
 
         user = users_collection.find_one({"email": email})
 
-        if user and user["password"] == password:
+        if user and check_password_hash(user["password"], password):
             session["email"] = email
             return redirect(url_for("dashboard"))
         else:
@@ -161,7 +158,7 @@ def register():
 
         new_user = {
             "email": email,
-            "password": password,
+            "password": generate_password_hash(password),
             "notifications_enabled": True,
             "welcome_email_sent": False,
             "created_at": datetime.now(ZoneInfo("Asia/Kolkata"))
