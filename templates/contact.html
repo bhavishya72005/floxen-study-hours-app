@@ -1,85 +1,383 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Contact | Floxen Study Hours</title>
-  <meta name="description" content="Contact Floxen Study Hours for support, feedback, or queries.">
-  <link rel="canonical" href="https://floxenstudyhours.com/contact">
-
-  <!-- Google Ads -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2183701268775294"
-     crossorigin="anonymous"></script>
-
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" sizes="32x32" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <meta name="description" content="Contact Floxen Study Hours for support, feedback, or queries. We respond within 24–48 hours."/>
+  <link rel="canonical" href="https://floxenstudyhours.com/contact"/>
+  <title>Contact Us | Floxen Study Hours</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      padding: 0;
-      background: #0f172a;
-      color: #e2e8f0;
+    :root {
+      --navy: #0A2463; --blue: #1E5FA8; --accent: #3A86FF;
+      --pale: #EEF4FF; --border: #C8D9F5; --white: #fff;
+      --ink: #0D1B2A; --ink-mid: #3D4F63; --ink-light: #7A8FA6;
+      --green: #16a34a; --green-soft: #f0fdf4; --green-border: #86efac;
+      --red: #dc2626; --red-soft: #fef2f2; --red-border: #fca5a5;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #f8faff; color: var(--ink); padding-top: 64px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Navbar ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(30,95,168,0.25); backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(100,180,255,0.3);
+      box-shadow: 0 4px 24px rgba(10,36,99,0.15);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 700; color: white; text-decoration: none; }
+    .logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.85); text-decoration: none; }
+    .nav-links a:hover { color: white; }
+    .nav-cta { background: var(--accent) !important; color: white !important; padding: 8px 18px !important; border-radius: 50px !important; font-weight: 600 !important; border: none !important; width: auto !important; margin: 0 !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none !important; border: none !important; cursor: pointer; width: auto !important; padding: 4px !important; margin: 0 !important; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: white; border-radius: 2px; }
+    .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(10,36,99,0.95); backdrop-filter: blur(16px); padding: 16px 24px 20px; gap: 14px; border-bottom: 1px solid rgba(100,180,255,0.3); }
+    .nav-links.open a { color: white; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .nav-links.open .nav-cta { border-bottom: none !important; text-align: center; }
+    @media (max-width: 768px) { .nav-links { display: none; } .hamburger { display: flex !important; } }
+    @media (min-width: 769px) { .hamburger { display: none !important; } .nav-links { display: flex !important; } }
+
+    /* ── Hero ── */
+    .page-hero {
+      background: linear-gradient(135deg, #0A2463, #1E5FA8);
+      padding: 56px 24px 48px; text-align: center; color: white;
+      position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute;
+      width: 300px; height: 300px; border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      top: -100px; right: -60px;
+    }
+    .page-hero-inner { position: relative; z-index: 1; }
+    .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 10px; font-weight: 700; }
+    .page-hero p { color: rgba(255,255,255,0.72); font-size: 1rem; max-width: 480px; margin: 0 auto; line-height: 1.6; }
+
+    /* ── Main layout ── */
+    .contact-wrap {
+      max-width: 960px; margin: 48px auto 80px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 28px;
+      align-items: start;
     }
 
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 40px 20px;
-      text-align: center;
+    /* ── Info cards ── */
+    .info-col { display: flex; flex-direction: column; gap: 16px; }
+
+    .info-card {
+      background: white; border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px 20px;
+      box-shadow: 0 2px 12px rgba(10,36,99,0.06);
+      display: flex; align-items: flex-start; gap: 14px;
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .info-card:hover { box-shadow: 0 6px 24px rgba(10,36,99,0.1); transform: translateY(-2px); }
+
+    .info-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: var(--pale); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
     }
 
-    h1 {
-      color: #38bdf8;
-      margin-bottom: 20px;
+    .info-body h3 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .info-body p { font-size: 0.85rem; color: var(--ink-mid); line-height: 1.55; margin: 0; }
+    .info-body a { color: var(--accent); font-weight: 600; }
+
+    /* FAQ card */
+    .faq-card {
+      background: var(--pale); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px 20px;
+    }
+    .faq-card h3 { font-size: 0.88rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; letter-spacing: 0.05em; text-transform: uppercase; }
+    .faq-item { margin-bottom: 12px; }
+    .faq-item:last-child { margin-bottom: 0; }
+    .faq-q { font-size: 0.85rem; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+    .faq-a { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.55; }
+
+    /* ── Contact form ── */
+    .form-card {
+      background: white; border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px 36px;
+      box-shadow: 0 2px 16px rgba(10,36,99,0.07);
     }
 
-    p {
-      color: #cbd5f5;
-      font-size: 16px;
-    }
+    .form-card h2 { font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .form-card .form-sub { font-size: 0.88rem; color: var(--ink-mid); margin-bottom: 24px; }
 
-    .email {
-      color: #22c55e;
-      font-weight: bold;
-      font-size: 18px;
-    }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
 
-    .card {
-      margin-top: 30px;
-      padding: 20px;
-      border-radius: 12px;
-      background: #1e293b;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem; color: var(--ink);
+      background: white; outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(58,134,255,0.12);
+    }
+    .form-group textarea { resize: vertical; min-height: 130px; }
 
-    footer {
-      margin-top: 50px;
-      font-size: 14px;
-      color: #94a3b8;
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .submit-btn {
+      width: 100%; padding: 13px;
+      background: var(--accent); color: white;
+      border: none; border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease;
+      margin-top: 4px;
+    }
+    .submit-btn:hover { background: var(--navy); transform: translateY(-1px); }
+    .submit-btn:disabled { background: var(--ink-light); cursor: not-allowed; transform: none; }
+
+    /* Success / Error messages */
+    .form-msg {
+      display: none; padding: 14px 16px;
+      border-radius: 10px; font-size: 0.9rem;
+      margin-bottom: 16px; font-weight: 500;
+    }
+    .form-msg.success { display: block; background: var(--green-soft); border: 1px solid var(--green-border); color: var(--green); }
+    .form-msg.error   { display: block; background: var(--red-soft);   border: 1px solid var(--red-border);   color: var(--red); }
+
+    /* ── Footer ── */
+    footer { background: var(--navy); color: rgba(255,255,255,0.6); padding: 28px 24px; text-align: center; font-size: 0.85rem; }
+    footer a { color: rgba(255,255,255,0.7); }
+    .footer-links { margin-top: 8px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .contact-wrap { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-card { padding: 24px 18px; }
     }
   </style>
 </head>
-
 <body>
 
-<div class="container">
+  <!-- Navbar -->
+  <header>
+    <nav class="nav-inner">
+      <a href="/" class="nav-logo">
+        <div class="logo-icon">⏱</div>
+        Floxen Study Hours
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/#register-section" class="nav-cta">Start Studying →</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
 
-  <h1>Contact Us</h1>
 
-  <p>We’d love to hear from you!</p>
+  <!-- Hero -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <h1>💬 Contact Us</h1>
+      <p>Have a question, found a bug, or want to give feedback? We'd love to hear from you.</p>
+    </div>
+  </section>
 
-  <div class="card">
-    <p>Email us at:</p>
-    <p class="email">floxenstudyhours@gmail.com</p>
-    <p>We usually respond within 24–48 hours.</p>
+
+  <!-- Main content -->
+  <div class="contact-wrap">
+
+    <!-- Left: info + FAQ -->
+    <div class="info-col">
+
+      <div class="info-card">
+        <div class="info-icon">📧</div>
+        <div class="info-body">
+          <h3>Email Us Directly</h3>
+          <p><a href="mailto:floxenstudyhours@gmail.com">floxenstudyhours@gmail.com</a><br/>We reply within 24–48 hours.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🐛</div>
+        <div class="info-body">
+          <h3>Report a Bug</h3>
+          <p>Found something broken? Use the form and select "Bug Report" — we fix issues fast.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">💡</div>
+        <div class="info-body">
+          <h3>Feature Requests</h3>
+          <p>Have an idea to make Floxen better? We read every suggestion and build the best ones.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🤝</div>
+        <div class="info-body">
+          <h3>Partnerships & Collabs</h3>
+          <p>Student communities, educators, or YouTubers — reach out and let's talk.</p>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-card">
+        <h3>Quick Answers</h3>
+
+        <div class="faq-item">
+          <div class="faq-q">Is Floxen Study Hours free?</div>
+          <div class="faq-a">Yes — 100% free. No subscription, no hidden fees.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How do I delete my account?</div>
+          <div class="faq-a">Go to your Dashboard → Menu → Delete Account. All data is removed within 7 days.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">I forgot my password. What do I do?</div>
+          <div class="faq-a">Contact us at the email above with your registered Gmail and we'll help you reset it.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Does Floxen work on mobile?</div>
+          <div class="faq-a">Yes — works on any browser on iPhone, iPad, and Android. No app download needed.</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Right: contact form -->
+    <div class="form-card">
+      <h2>Send Us a Message</h2>
+      <p class="form-sub">Fill in the form below and we'll get back to you within 24–48 hours.</p>
+
+      <div class="form-msg" id="formMsg"></div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="Bhavishya" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@gmail.com" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <select id="subject">
+          <option value="">Select a topic...</option>
+          <option value="bug">🐛 Bug Report</option>
+          <option value="feature">💡 Feature Request</option>
+          <option value="account">🔐 Account Help</option>
+          <option value="feedback">⭐ General Feedback</option>
+          <option value="partnership">🤝 Partnership / Collaboration</option>
+          <option value="other">💬 Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="Tell us what's on your mind..."></textarea>
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">
+        Send Message →
+      </button>
+    </div>
+
   </div>
 
+
+  <!-- Footer -->
   <footer>
-    © 2026 Floxen Study Hours. All rights reserved.
+    <div>© 2026 Floxen Study Hours. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/contact">Contact</a>
+    </div>
   </footer>
 
-</div>
+
+  <script>
+    /* ── Hamburger ── */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    /* ── Contact form — sends via mailto fallback ── */
+    function handleSubmit() {
+      const name    = document.getElementById('name').value.trim();
+      const email   = document.getElementById('email').value.trim();
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value.trim();
+      const msg     = document.getElementById('formMsg');
+      const btn     = document.getElementById('submitBtn');
+
+      // Basic validation
+      if (!name || !email || !subject || !message) {
+        msg.className = 'form-msg error';
+        msg.textContent = '⚠️ Please fill in all fields before submitting.';
+        return;
+      }
+
+      if (!email.includes('@')) {
+        msg.className = 'form-msg error';
+        msg.textContent = '⚠️ Please enter a valid email address.';
+        return;
+      }
+
+      // Disable button
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      // Build mailto link and open it
+      const mailSubject = encodeURIComponent(`[Floxen Contact] ${subject} — from ${name}`);
+      const mailBody    = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\nTopic: ${subject}\n\nMessage:\n${message}`
+      );
+      window.location.href = `mailto:floxenstudyhours@gmail.com?subject=${mailSubject}&body=${mailBody}`;
+
+      // Show success
+      setTimeout(() => {
+        msg.className = 'form-msg success';
+        msg.textContent = '✅ Your email client has opened! Send the email to complete your message.';
+        btn.disabled = false;
+        btn.textContent = 'Send Message →';
+      }, 1000);
+    }
+  </script>
 
 </body>
 </html>

@@ -1,122 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" sizes="32x32" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <meta name="description" content="Terms and Conditions for using Floxen Study Hours — a free distraction-free YouTube study platform for students."/>
+  <link rel="canonical" href="https://floxenstudyhours.com/terms"/>
   <title>Terms & Conditions | Floxen Study Hours</title>
-  <meta name="description" content="Read the Terms and Conditions for using Floxen Study Hours - a productivity platform for focused study sessions.">
-  <link rel="canonical" href="https://floxenstudyhours.com/terms">
-
-  <!-- Google Ads -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2183701268775294"
-     crossorigin="anonymous"></script>
-
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      padding: 0;
-      background: #0f172a;
-      color: #e2e8f0;
+    /* Same styles as privacy.html — copy the entire <style> block from above */
+    :root {
+      --navy: #0A2463; --blue: #1E5FA8; --accent: #3A86FF;
+      --pale: #EEF4FF; --border: #C8D9F5; --white: #fff;
+      --ink: #0D1B2A; --ink-mid: #3D4F63; --ink-light: #7A8FA6;
     }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 40px 20px;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #f8faff; color: var(--ink); padding-top: 64px; }
+    a { color: var(--accent); }
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(30,95,168,0.25); backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(100,180,255,0.3);
+      box-shadow: 0 4px 24px rgba(10,36,99,0.15);
     }
-
-    h1, h2 {
-      color: #38bdf8;
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
     }
-
-    h1 {
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    h2 {
-      margin-top: 30px;
-    }
-
-    p, li {
-      color: #cbd5f5;
-      font-size: 16px;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    .email {
-      color: #22c55e;
-      font-weight: bold;
-    }
-
-    footer {
-      margin-top: 50px;
-      text-align: center;
-      font-size: 14px;
-      color: #94a3b8;
-    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 700; color: white; text-decoration: none; }
+    .logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.85); text-decoration: none; }
+    .nav-links a:hover { color: white; }
+    .nav-cta { background: var(--accent) !important; color: white !important; padding: 8px 18px !important; border-radius: 50px !important; font-weight: 600 !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; width: auto !important; padding: 4px !important; margin: 0 !important; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: white; border-radius: 2px; }
+    .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(10,36,99,0.95); backdrop-filter: blur(16px); padding: 16px 24px 20px; gap: 14px; border-bottom: 1px solid rgba(100,180,255,0.3); }
+    .nav-links.open a { color: white; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    @media (max-width: 768px) { .nav-links { display: none; } .hamburger { display: flex !important; } }
+    @media (min-width: 769px) { .hamburger { display: none !important; } .nav-links { display: flex !important; } }
+    .page-hero { background: linear-gradient(135deg, #0A2463, #1E5FA8); padding: 48px 24px 40px; text-align: center; color: white; }
+    .page-hero h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 8px; }
+    .page-hero p { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+    .content-wrap { max-width: 800px; margin: 40px auto 80px; padding: 0 24px; }
+    .policy-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px 44px; box-shadow: 0 2px 16px rgba(10,36,99,0.07); }
+    .policy-card h2 { font-size: 1.15rem; color: var(--navy); margin: 2rem 0 0.7rem; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .policy-card h2:first-child { margin-top: 0; }
+    .policy-card p, .policy-card li { font-size: 0.93rem; color: var(--ink-mid); line-height: 1.8; margin-bottom: 0.8rem; }
+    .policy-card ul { margin-left: 20px; margin-bottom: 1rem; }
+    .policy-card li { margin-bottom: 0.4rem; }
+    .policy-card strong { color: var(--navy); font-weight: 600; }
+    .highlight { background: var(--pale); border-left: 4px solid var(--accent); padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 1.2rem 0; font-size: 0.9rem; color: var(--navy); }
+    .updated-badge { display: inline-block; background: var(--pale); border: 1px solid var(--border); color: var(--blue); font-size: 0.78rem; font-weight: 600; padding: 4px 12px; border-radius: 50px; margin-bottom: 1.5rem; }
+    footer { background: var(--navy); color: rgba(255,255,255,0.6); padding: 28px 24px; text-align: center; font-size: 0.85rem; }
+    footer a { color: rgba(255,255,255,0.7); }
+    .footer-links { margin-top: 8px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    @media (max-width: 600px) { .policy-card { padding: 24px 18px; } }
   </style>
 </head>
-
 <body>
 
-<div class="container">
+  <header>
+    <nav class="nav-inner">
+      <a href="/" class="nav-logo"><div class="logo-icon">⏱</div>Floxen Study Hours</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/#register-section" class="nav-cta">Start Studying →</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
 
-  <h1>Terms & Conditions</h1>
+  <section class="page-hero">
+    <h1>📋 Terms & Conditions</h1>
+    <p>Please read these terms carefully before using Floxen Study Hours</p>
+  </section>
 
-  <p>
-    By accessing or using <strong>Floxen Study Hours</strong>, you agree to comply with and be bound by the following terms and conditions.
-  </p>
+  <div class="content-wrap">
+    <div class="policy-card">
 
-  <h2>Use of the Website</h2>
-  <ul>
-    <li>This platform is intended for educational and productivity purposes only.</li>
-    <li>Users must not misuse the platform, chatbot, or attempt any harmful or unauthorized activities.</li>
-  </ul>
+      <span class="updated-badge">📅 Last updated: May 2026</span>
 
-  <h2>Chatbot Usage</h2>
-  <p>
-    To ensure fair usage and system stability, chatbot interactions may be limited per user per day.
-  </p>
+      <p>By accessing or using <strong>Floxen Study Hours</strong> ("the platform"), you agree to be bound by these Terms and Conditions. If you do not agree, please do not use the platform.</p>
 
-  <h2>Accounts & Security</h2>
-  <p>
-    You are responsible for maintaining the confidentiality of your login credentials. Any activity under your account is your responsibility.
-  </p>
+      <h2>1. About the Platform</h2>
+      <p>Floxen Study Hours is a free web-based productivity platform that allows students to watch YouTube videos in a distraction-free environment with study timers, activity tracking, a notepad, and an AI study assistant. The platform is operated by Bhavishya, based in India.</p>
 
-  <h2>Intellectual Property</h2>
-  <p>
-    All content, branding, and design elements of Floxen Study Hours are the property of the platform unless otherwise stated.
-  </p>
+      <h2>2. Eligibility</h2>
+      <p>You must be at least 13 years of age to use this platform. By registering, you confirm that the information you provide is accurate and that you are eligible to use the service.</p>
 
-  <h2>Limitation of Liability</h2>
-  <p>
-    Floxen Study Hours is provided "as is" without warranties of any kind. We are not responsible for study outcomes, interruptions, or data loss.
-  </p>
+      <h2>3. Account Responsibilities</h2>
+      <ul>
+        <li>You are responsible for maintaining the confidentiality of your login credentials</li>
+        <li>You are responsible for all activity that occurs under your account</li>
+        <li>You must notify us immediately at <a href="mailto:floxenstudyhours@gmail.com">floxenstudyhours@gmail.com</a> if you suspect unauthorized access</li>
+        <li>You may not share your account with others or create multiple accounts</li>
+      </ul>
 
-  <h2>Changes to Terms</h2>
-  <p>
-    We may update these terms at any time. Continued use of the platform after changes implies acceptance of the updated terms.
-  </p>
+      <h2>4. Acceptable Use</h2>
+      <p>You agree to use the platform only for lawful, educational purposes. You must not:</p>
+      <ul>
+        <li>Attempt to hack, reverse engineer, or disrupt the platform</li>
+        <li>Use the AI chatbot for harmful, abusive, or illegal purposes</li>
+        <li>Submit content that violates copyright or intellectual property laws</li>
+        <li>Use automated scripts, bots, or scrapers on the platform</li>
+        <li>Attempt to gain unauthorized access to other users' accounts or data</li>
+      </ul>
 
-  <h2>Contact</h2>
-  <p>
-    For any questions or concerns, contact us at:
-    <br>
-    <span class="email">floxenstudyhours@gmail.com</span>
-  </p>
+      <h2>5. YouTube Content</h2>
+      <p>Floxen Study Hours embeds YouTube videos using the official YouTube iFrame API. We do not host, own, or control any video content. All YouTube content is subject to YouTube's own <a href="https://www.youtube.com/t/terms" target="_blank">Terms of Service</a> and community guidelines. You are responsible for ensuring the YouTube content you study complies with applicable laws.</p>
+
+      <h2>6. AI Chatbot</h2>
+      <p>The study assistant chatbot is powered by OpenAI's API and is designed for academic and study-related questions only. We do not guarantee the accuracy of chatbot responses. Do not rely solely on chatbot answers for critical exam preparation — always verify with trusted academic sources.</p>
+
+      <div class="highlight">
+        ⚠️ Chat messages are sent to OpenAI for processing. Do not share personal, sensitive, or confidential information in the chatbot.
+      </div>
+
+      <h2>7. Account Deletion</h2>
+      <p>You may delete your account at any time from your dashboard. Upon deletion, all your personal data including your email, password, and activity history will be permanently removed from our systems within 7 days. This action is irreversible.</p>
+
+      <h2>8. Email Notifications</h2>
+      <p>By enabling notifications, you consent to receiving motivational study reminder emails from Floxen Study Hours. You may disable notifications at any time from the dashboard menu. We will never send spam or share your email with third parties.</p>
+
+      <h2>9. Intellectual Property</h2>
+      <p>All original content, branding, design elements, and code of Floxen Study Hours are the intellectual property of the platform owner. You may not copy, reproduce, or redistribute any part of the platform without written permission.</p>
+
+      <h2>10. Affiliate Links Disclosure</h2>
+      <p>
+        Some pages on Floxen Study Hours contain affiliate links to products
+        on Amazon.in and other platforms. This means we may earn a small
+        commission if you click a link and make a purchase — at no extra
+        cost to you.
+      </p>
+      <p>
+        <strong>As an Amazon Associate, Floxen Study Hours earns from
+        qualifying purchases.</strong> We only recommend products we
+        genuinely believe are useful for students. Affiliate relationships
+        do not influence our editorial content or opinions.
+      </p>
+      <p>
+        All affiliate links are clearly marked and accompanied by a
+        disclosure notice on the relevant page.
+      </p>
+
+      <h2>11. Limitation of Liability</h2>
+      <p>Floxen Study Hours is provided "as is" without warranties of any kind. We are not responsible for:</p>
+      <ul>
+        <li>Study outcomes or exam results</li>
+        <li>Service interruptions or downtime</li>
+        <li>Data loss due to technical issues</li>
+        <li>Content accuracy of embedded YouTube videos</li>
+        <li>Accuracy of AI chatbot responses</li>
+      </ul>
+
+      <h2>12. Changes to Terms</h2>
+      <p>We reserve the right to update these Terms at any time. The "Last updated" date will reflect changes. Continued use of the platform after changes constitutes your acceptance of the updated terms. We recommend reviewing this page periodically.</p>
+
+      <h2>13. Governing Law</h2>
+      <p>These Terms are governed by the laws of India. Any disputes shall be subject to the jurisdiction of courts in Telangana, India.</p>
+
+      <h2>14. Contact</h2>
+      <p>For any questions about these Terms, contact us at:<br/>
+      📧 <a href="mailto:floxenstudyhours@gmail.com">floxenstudyhours@gmail.com</a></p>
+
+    </div>
+  </div>
 
   <footer>
-    © 2026 Floxen Study Hours. All rights reserved.
+    <div>© 2026 Floxen Study Hours. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/contact">Contact</a>
+    </div>
   </footer>
 
-</div>
-
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
+  </script>
 </body>
 </html>

@@ -119,6 +119,10 @@ def blog_stop_distraction():
 def blog_pomodoro():
     return render_template("blogs/pomodoro-technique.html")
 
+@app.route("/blog/notes-science")
+def blog_notes_science():
+    return render_template("blogs/notes-science.html")
+
 # ---------- AUTH ----------
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -177,6 +181,24 @@ def register():
 
     return render_template("floxenstudyhours.html")
 
+@app.route("/delete-account", methods=["POST"])
+def delete_account():
+    if "email" not in session:
+        return jsonify({"ok": False, "message": "Not logged in"}), 401
+
+    email = session["email"]
+
+    # Delete all user data from both collections
+    users_collection.delete_one({"email": email})
+    activity_collection.delete_many({"email": email})
+
+    # Also clean up any OTPs if you add that later
+    # otp_collection.delete_many({"email": email})
+
+    # Clear session
+    session.clear()
+
+    return jsonify({"ok": True, "message": "Account deleted successfully"})
 
 @app.route("/dashboard")
 def dashboard():
@@ -406,8 +428,8 @@ if __name__ == "__main__":
     scheduler.add_job(
         send_daily_reminders,
         trigger="cron",
-        hour=17,  # 8 30 AM IST
-        minute=15,
+        hour=13,  # 8 30 AM IST
+        minute=00,
         id="daily_reminder",
         replace_existing=True
     )

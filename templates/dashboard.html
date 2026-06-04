@@ -491,6 +491,18 @@
                         <span class="slider"></span>
                     </label>
                 </div>
+                <div class="delete-account-section">
+                  <p style="font-size:0.85rem; color:#888; margin-bottom:10px;">
+                    Deleting your account is permanent and cannot be undone.
+                  </p>
+                  <button id="deleteAccountBtn" style="
+                    background: #dc2626; color: white; border: none;
+                    padding: 10px 20px; border-radius: 8px; cursor: pointer;
+                    font-size: 0.9rem; font-weight: 600; width: 100%;
+                  ">
+                    🗑️ Delete My Account
+                  </button>
+                </div>
                 <button type="button" onclick="window.location.href='/timer-theme'">Timer Theme</button>
                 <button type="button" onclick="window.location.href='/your-activity'">Your Activity</button>
             </div>
@@ -735,6 +747,35 @@
                 }
             }
 
+            // ---- Delete Account ----
+            const deleteBtn = document.getElementById('deleteAccountBtn');
+            if (deleteBtn) {
+              deleteBtn.addEventListener('click', () => {
+                const confirmed = confirm(
+                  "⚠️ Are you sure you want to delete your account?\n\n" +
+                  "This will permanently delete:\n" +
+                  "• Your account\n• All your activity history\n• Your notification settings\n\n" +
+                  "This action CANNOT be undone."
+                );
+
+                if (!confirmed) return;
+
+                fetch('/delete-account', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' }
+                })
+                .then(res => res.json())
+                .then(data => {
+                  if (data.ok) {
+                    alert("Your account has been deleted. Goodbye! 👋");
+                    window.location.href = '/';
+                  } else {
+                    alert("Something went wrong: " + data.message);
+                  }
+                })
+                .catch(() => alert("Network error. Please try again."));
+              });
+            }
 
         </script>
 

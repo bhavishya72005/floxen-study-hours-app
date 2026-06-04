@@ -19,11 +19,11 @@ html, body {
       right: 0;
       z-index: 100;
        /* Blue tinted glass effect */
-      background: rgba(30, 95, 168, 0.25);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(17, 2, 59, 0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       /* Glassy border */
-      border-bottom: 1px solid rgba(100, 180, 255, 0.3);
+      border-bottom: 0.5px solid rgba(255,255,255,0.12);
       /* Soft blue glow */
       box-shadow:
       0 4px 24px rgba(10, 36, 99, 0.15),
@@ -35,7 +35,7 @@ html, body {
       max-width: var(--max-width);
       margin: 0 auto;
       padding: 0 24px;
-      height: 64px;
+      height: 58px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -46,7 +46,8 @@ html, body {
     .nav-logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      text-decoration: none;
+      gap: 9px;
       font-family: var(--font-head);
       font-size: 1.2rem;
       color: white;
@@ -55,15 +56,16 @@ html, body {
     }
 
     .nav-logo .logo-icon {
-      width: 80px;
-      height: 56px;
-      background: var(--blue-light);
-      border-radius: var(--radius-sm);
+      width: 30px;
+      height: 30px;
+      background: rgba(79,124,255,0.25);
+      border: 0.5px solid rgba(79,124,255,0.45);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 1rem;
+      font-size: 15px;
     }
 
     /* Nav links */
@@ -76,19 +78,25 @@ html, body {
 
     .nav-links a {
       font-size: 0.9rem;
+      text-decoration: none;
       font-weight: 500;
-      color: rgba(255, 255, 255, 0.85);
-      transition: color var(--transition);
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+      color: rgba(255,255,255,0.65);
     }
 
-    .nav-links a:hover,
+    .nav-links a:hover {
+      color: #ffffff;
+      background: rgba(255,255,255,0.08);
+    }
     .nav-links a.active { color: #ffffff; }
 
     .nav-cta {
-        background: var(--blue-light) !important;
+        background: #4f7cff
         color: var(--white) !important;
-        padding: 8px 18px !important;
-        border-radius: 50px !important;
+        padding: 7px 16px !important;
+        border-radius: 7px !important;
         font-weight: 600 !important;
         font-size: 0.9rem !important;
         border: none !important;          /* overrides global input/button border */
