@@ -368,6 +368,11 @@
     .footer-links-group a { font-size: 0.85rem; color: rgba(255,255,255,0.65); }
     .footer-links-group a:hover { color: white; }
 
+    @media (max-width: 600px) {
+      .product-cards {
+        grid-template-columns: 1fr !important;
+      }
+    }
     /* Amazon affiliate footer disclaimer */
     .amazon-footer-disclaimer {
       font-size: 0.78rem;
@@ -604,24 +609,9 @@
       <p>The real enemy of good note-taking is neither the pen nor the keyboard — <strong>it is distraction</strong>. The environment around your note-taking matters as much as the tool you use.</p>
     </div>
 
-    <!-- Practical table -->
-    <table class="compare-table fade-in">
-      <thead>
-        <tr><th>Situation</th><th>Best method</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Watching a YouTube lecture for the first time</td><td class="win">✏️ Handwrite</td></tr>
-        <tr><td>Physics / Chemistry / Maths problems</td><td class="win">✏️ Handwrite</td></tr>
-        <tr><td>Building a revision summary sheet</td><td class="draw">⌨️ Type</td></tr>
-        <tr><td>Fast-paced lecture with lots of facts</td><td class="draw">⌨️ Type</td></tr>
-        <tr><td>Diagram-heavy biology / anatomy</td><td class="win">✏️ Handwrite</td></tr>
-        <tr><td>Organising and cross-referencing topics</td><td class="draw">⌨️ Type</td></tr>
-        <tr><td>Studying on a tablet with stylus</td><td class="draw">🏆 Best of both</td></tr>
-      </tbody>
-    </table>
-
     <hr class="divider" />
 
+    <!-- AFFILIATE PRODUCT BOX -->
     <!-- AFFILIATE PRODUCT BOX -->
     <div class="affiliate-box fade-in">
       <div class="affiliate-box-header">
@@ -629,14 +619,14 @@
         <h3>Recommended Study Stationery on Amazon</h3>
       </div>
 
-      <div class="product-cards">
+      <div class="product-cards" style="grid-template-columns: repeat(3, 1fr);">
 
         <!-- Highlighters -->
         <div class="product-card">
           <div class="product-emoji">🖊️</div>
           <div class="product-name">RECLUSE 12 PCS Pastel Highlighter Set</div>
           <div class="product-desc">Assorted pastel colours, smooth quick-dry ink, perfect for colour-coding notes and marking key points in textbooks.</div>
-          <a href="https://www.amazon.in/RECLUSE-Highlighter-Assorted-Aesthetic-Notebook/dp/B0FWR5HMJK?crid=30KST6GFW81OO&dib=eyJ2IjoiMSJ9.YC9QA94L6VrmOJhz0h9wqR7JIH0z2HSoyH4JosxINMiN0_AFV7nGcrqHvqaMS8NAX4hSzEoO0gHo48QGSG41Zr5-C_c9IIcWkzXj2c3ETfpaTNb0XTxO3Y59OGuzRzN8Oeq42b1ErHQ-AwPJ2rbR2K1hEVoUQaTfzgG2lGdPffPCfdGz8VNYbtdUmxr3JXSRMsYkxDA42x3KDgp6U9QRaJ-x2wGlonYp2vPP2h-a33N9Jpae8jieOQwGSdlM6IgLD87pVk_ETx8yMXxicFakUadB6RI3gQ9fF7cnfodKHdw.KjQUl6Q6fBHBJE-JYNcqvS40D-3_HUuqeGPw1lBmlLQ&dib_tag=se&keywords=notebook+with+pens&qid=1780561833&sprefix=notebook+with+pens%2Caps%2C401&sr=8-11&linkCode=ll2&tag=floxenstudy-21&linkId=6fec0ffa945347a8a6ba0ca9984e6e6a&ref_=as_li_ss_tl"
+          <a href="https://amzn.to/4u8tM6F"
              target="_blank"
              rel="nofollow sponsored"
              class="product-btn">
@@ -648,8 +638,21 @@
         <div class="product-card">
           <div class="product-emoji">📓</div>
           <div class="product-name">KAANUKA Unruled Practice Notebook (Set of 4)</div>
-          <div class="product-desc">192 pages, 275×190mm, semi-rough surface — ideal for diagrams, maths problems, and free-form notes.</div>
-          <a href="https://amzn.to/4dNR115"
+          <div class="product-desc">192 pages, 275×190mm, semi-rough surface — ideal for diagrams, maths problems, and free-form notes. "Affordable Rough Notebook's Choice"</div>
+          <a href="https://amzn.to/4uVel3a"
+             target="_blank"
+             rel="nofollow sponsored"
+             class="product-btn">
+            View on Amazon →
+          </a>
+        </div>
+
+        <!-- Pens -->
+        <div class="product-card">
+          <div class="product-emoji">✒️</div>
+          <div class="product-name">Reynolds DFINE Ball Pen SET - 25 BLUE PENS</div>
+          <div class="product-desc">The Reynolds DFINE Ballpens feature a timeless design and deliver a smooth writing experience with their easy-flowing ink and precise 0.7mm tip.</div>
+          <a href="https://amzn.to/43DceVL"
              target="_blank"
              rel="nofollow sponsored"
              class="product-btn">
